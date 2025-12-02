@@ -36,11 +36,22 @@ body {
   background-color: antiquewhite;
 }
 #top-right > button,
-#counter {
+#counter,
+#btm-left > button {
   font-size: 1.5rem;
 }
 #btm-left {
   background-color: darkkhaki;
+}
+
+#toggle-box {
+  width: 150px;
+  height: 150px;
+  border-radius: 15px;
+  position: relative;
+  margin: 0 auto;
+  background-color: aquamarine;
+  visibility: hidden;
 }
 #btm-right {
   background-color: navajowhite;

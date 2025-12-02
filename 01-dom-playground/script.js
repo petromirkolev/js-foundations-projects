@@ -1,5 +1,5 @@
 ////////////////
-// MIRROR INPUT
+// Mirror input
 document.querySelector('input').addEventListener('keyup', (e) => {
   let text = document.querySelector('#input').value;
   if (e.key !== 'Backspace') {
@@ -28,7 +28,7 @@ function isInputEmpty() {
   }
 }
 /////////////////
-// BUTTON COUNTER
+// Button counter
 // Increment counter value
 document.querySelector('#incrementer').addEventListener('click', (e) => {
   document.querySelector('#counter').textContent++;
@@ -36,4 +36,12 @@ document.querySelector('#incrementer').addEventListener('click', (e) => {
 // Decrease counter value
 document.querySelector('#decrementer').addEventListener('click', (e) => {
   document.querySelector('#counter').textContent--;
+});
+/////////////////
+// Toggle box
+document.querySelector('#toggle').addEventListener('click', () => {
+  let box = document.querySelector('#toggle-box');
+  box.style.visibility === 'hidden'
+    ? (box.style.visibility = 'visible')
+    : (box.style.visibility = 'hidden');
 });
