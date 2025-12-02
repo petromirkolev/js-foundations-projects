@@ -1,3 +1,5 @@
+////////////////
+// MIRROR INPUT
 document.querySelector('input').addEventListener('keyup', (e) => {
   let text = document.querySelector('#input').value;
   if (e.key !== 'Backspace') {
@@ -25,3 +27,5 @@ function isInputEmpty() {
     document.querySelector('#input-mirror').textContent = '';
   }
 }
+////////////////
+// BUTTON COUNTER
