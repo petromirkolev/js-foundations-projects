@@ -55,3 +55,16 @@ document.querySelector('#add-to-list').addEventListener('click', (e) => {
     document.querySelector('#list-input').value = '';
   }
 });
+////////////////////
+// Reset Playground
+document.querySelector('#reset-pg').addEventListener('click', () => {
+  if (document.querySelector('#input').value !== '') {
+    document.querySelector('#input').value = '';
+    document.querySelector('#input-mirror').textContent = '';
+  }
+  if (document.querySelector('#counter').textContent !== 0) {
+    document.querySelector('#counter').textContent = 0;
+  }
+  document.querySelector('#toggle-box').style.visibility = 'hidden';
+  document.querySelector('#list').innerHTML = '';
+});
