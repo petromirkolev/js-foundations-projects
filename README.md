@@ -8,11 +8,11 @@ This repository is intentionally simple and structured. Each folder contains a s
 
 ## 📂 Project Structure
 
-01-dom-playground/ → DOM, events, state
-02-array-utils/ → Array methods (map, filter, reduce)
-03-objects-and-state/ → Objects, functions, modularization
-04-async-basics/ → Promises, async/await
-05-api-mini-project/ → Fetch API, error handling, rendering results
+01-dom-playground/ → DOM, events, state </br>
+02-array-utils/ → Array methods (map, filter, reduce) </br>
+03-objects-and-state/ → Objects, functions, modularization </br>
+04-async-basics/ → Promises, async/await </br>
+05-api-mini-project/ → Fetch API, error handling, rendering results </br>
 
 ---
 
