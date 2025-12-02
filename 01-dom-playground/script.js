@@ -37,11 +37,21 @@ document.querySelector('#incrementer').addEventListener('click', (e) => {
 document.querySelector('#decrementer').addEventListener('click', (e) => {
   document.querySelector('#counter').textContent--;
 });
-/////////////////
+//////////////
 // Toggle box
 document.querySelector('#toggle').addEventListener('click', () => {
   let box = document.querySelector('#toggle-box');
   box.style.visibility === 'hidden'
     ? (box.style.visibility = 'visible')
     : (box.style.visibility = 'hidden');
+});
+/////////////////
+// Shopping list
+document.querySelector('#add-to-list').addEventListener('click', (e) => {
+  let listItem = document.createElement('li');
+  if (document.querySelector('#list-input').value !== '') {
+    listItem.textContent = document.querySelector('#list-input').value;
+    document.querySelector('#list').appendChild(listItem);
+    document.querySelector('#list-input').value = '';
+  }
 });

@@ -13,6 +13,7 @@ body {
 #btm-right {
   font-family: monospace;
   background-color: cadetblue;
+  display: inline-block;
   align-content: center;
   text-align: center;
 }
@@ -37,7 +38,8 @@ body {
 }
 #top-right > button,
 #counter,
-#btm-left > button {
+#btm-left > button,
+#btm-right > button {
   font-size: 1.5rem;
 }
 #btm-left {
@@ -55,4 +57,12 @@ body {
 }
 #btm-right {
   background-color: navajowhite;
+}
+#btm-right > input,
+#btm-right > button {
+  vertical-align: middle;
+}
+
+#list {
+  text-align: start;
 }
