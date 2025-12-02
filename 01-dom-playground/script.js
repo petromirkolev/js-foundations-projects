@@ -1,15 +1,12 @@
-// Add input keys
-document.querySelector('input').addEventListener('keypress', (e) => {
-  let text = document.querySelector('#input').value;
-  checkLength(text);
-});
-// Remove last string char if backspace is pressed
 document.querySelector('input').addEventListener('keyup', (e) => {
-  if (e.key === 'Backspace') {
-    let text = document.querySelector('#input').value;
+  let text = document.querySelector('#input').value;
+  if (e.key !== 'Backspace') {
     checkLength(text);
-    isInputEmpty();
   }
+  if (e.key === 'Backspace') {
+    checkLength(text);
+  }
+  isInputEmpty();
 });
 // Limit reverse input chars to specified length
 function checkLength(text) {
