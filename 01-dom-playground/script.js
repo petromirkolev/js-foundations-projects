@@ -27,5 +27,13 @@ function isInputEmpty() {
     document.querySelector('#input-mirror').textContent = '';
   }
 }
-////////////////
+//////////////////
 // BUTTON COUNTER
+// Increment counter value
+document.querySelector('#incrementer').addEventListener('click', (e) => {
+  document.querySelector('#counter').textContent++;
+});
+// Decrease counter value
+document.querySelector('#decrementer').addEventListener('click', (e) => {
+  document.querySelector('#counter').textContent--;
+});
