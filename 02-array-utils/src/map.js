@@ -1,5 +1,8 @@
 // Implement Array.prototype.map() with a pure function
 export function mapArray(array, callback) {
+  if (!Array.isArray(array)) {
+    throw new TypeError('Expected an array');
+  }
   const result = [];
   for (let i = 0; i < array.length; i++) {
     const item = array[i];

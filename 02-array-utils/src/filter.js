@@ -1,5 +1,8 @@
 // Implement Array.prototype.filter() with a pure function
 export function filterArray(array, callback) {
+  if (!Array.isArray(array)) {
+    throw new TypeError('Expected an array');
+  }
   const filteredArray = [];
   for (let i = 0; i < array.length; i++) {
     const item = array[i];
