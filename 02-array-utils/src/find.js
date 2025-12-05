@@ -1,8 +1,5 @@
 // Implement Array.prototype.find() with a pure function
 export function findInArray(array, predicate) {
-  if (array.length === 0 || !Array.isArray(array)) {
-    throw new Error('Not an array!');
-  }
   const result = [];
   for (let i = 0; i < array.length; i++) {
     const item = array[i];
