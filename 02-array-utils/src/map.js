@@ -1,5 +1,5 @@
 // Implement Array.prototype.map() with a pure function
-function mapArray(array, callback) {
+export function mapArray(array, callback) {
   const result = [];
   for (let i = 0; i < array.length; i++) {
     const item = array[i];

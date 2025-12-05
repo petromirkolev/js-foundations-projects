@@ -1,5 +1,5 @@
 // Implement Array.prototype.filter() with a pure function
-function filterArray(array, callback) {
+export function filterArray(array, callback) {
   const filteredArray = [];
   for (let i = 0; i < array.length; i++) {
     const item = array[i];

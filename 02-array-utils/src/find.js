@@ -1,5 +1,5 @@
 // Implement Array.prototype.find() with a pure function
-function findInArray(array, predicate) {
+export function findInArray(array, predicate) {
   const result = [];
   for (let i = 0; i < array.length; i++) {
     const item = array[i];

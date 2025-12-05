@@ -1,5 +1,5 @@
 // Implement Array.prototype.sort() with a pure function
-function sortArray(array, compareFn) {
+export function sortArray(array, compareFn) {
   let result = array;
   for (let i = 0; i < array.length; i++) {
     for (let j = 0; j < array.length; j++) {
@@ -15,4 +15,4 @@ function sortArray(array, compareFn) {
 }
 
 // Testing
-console.log(sortArray([12, 34, 45, 56, 23], (x, y) => y - x));
+// console.log(sortArray([12, 34, 45, 56, 23], (x, y) => y - x));
