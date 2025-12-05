@@ -1,5 +1,8 @@
 // Implement Array.prototype.reduce() with a pure function
 export function reduceArray(array, reducer, initialValue) {
+  if (array.length === 0 || !Array.isArray(array)) {
+    throw new Error('Not an array!');
+  }
   let result = initialValue;
   for (let i = 0; i < array.length; i++) {
     result = reducer(result, array[i]);

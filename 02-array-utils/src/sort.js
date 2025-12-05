@@ -1,5 +1,8 @@
 // Implement Array.prototype.sort() with a pure function
 export function sortArray(array, compareFn) {
+  if (array.length === 0 || !Array.isArray(array)) {
+    throw new Error('Not an array!');
+  }
   let result = array;
   for (let i = 0; i < array.length; i++) {
     for (let j = 0; j < array.length; j++) {
