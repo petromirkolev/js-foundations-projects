@@ -1,0 +1,13 @@
+// Implement Array.prototype.find() with a pure function
+function findInArray(array, predicate) {
+  const result = [];
+  for (let i = 0; i < array.length; i++) {
+    const item = array[i];
+    if (predicate(item)) {
+      result.push(item);
+    }
+  }
+  return result;
+}
+// Testing
+// console.log(findInArray([2, 3, 4, 5, 6, 7], (x) => x % 2 === 0));
