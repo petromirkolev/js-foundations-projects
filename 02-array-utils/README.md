@@ -1,33 +1,38 @@
-# Array Utils
+# 02 – Array Utils
 
-Small utilities demonstrating core array methods.
+Small utility functions that demonstrate how core array operations work under the hood.
 
-## 🎯 Included Methods
+## 🎯 Goal
 
-- `map`
-- `filter`
-- `reduce`
-- `sort`
-- `find`
+Reimplement a subset of common array methods using plain loops:
 
-Each function has:
+- No "Array.prototype.map", "filter", etc. inside implementations.
+- Functions are **pure** and **do not mutate** input arrays.
+- Each function has several example calls.
 
-- a simple input
-- a clear output
-- console examples
+## ✅ Implemented Functions
 
----
+- "mapArray(array, callback)"
+- "filterArray(array, predicate)"
+- "reduceArray(array, reducer, initialValue)"
+- "sortArray(array, compareFn)"
+- "findInArray(array, predicate)"
+
+See "examples/examples.js" for usage.
 
 ## 🧠 Concepts Practiced
 
-- pure functions
-- immutability
-- transforming arrays
-- chaining methods
-- debugging with console.log
+- Iterating arrays with "for" loops
+- Pure functions (no side effects)
+- Immutability (no in-place mutation of inputs)
+- Functional thinking: input → output
+- Basic debugging with "console.log"
+- Reusable utilities
 
----
+## ▶️ How to Run
 
-## ▶️ Running
+From the project root:
 
-node index.js
+```bash
+node examples/examples.js
+```
