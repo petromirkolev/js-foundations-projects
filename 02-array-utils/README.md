@@ -10,7 +10,7 @@ Reimplement a subset of common array methods using plain loops:
 - Functions are **pure** and **do not mutate** input arrays.
 - Each function has several example calls.
 
-## ✅ Implemented Functions
+## ✅ Implemented functions
 
 - "mapArray(array, callback)"
 - "filterArray(array, predicate)"
@@ -20,7 +20,7 @@ Reimplement a subset of common array methods using plain loops:
 
 See "examples/examples.js" for usage.
 
-## 🧠 Concepts Practiced
+## 🧠 Concepts practiced
 
 - Iterating arrays with "for" loops
 - Pure functions (no side effects)
@@ -29,7 +29,7 @@ See "examples/examples.js" for usage.
 - Basic debugging with "console.log"
 - Reusable utilities
 
-## ▶️ How to Run
+## ▶️ How to run
 
 From the project root:
 
