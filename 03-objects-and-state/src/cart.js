@@ -1,27 +1,40 @@
 const cart = {
-  items: [
-    // { id: 'p1', name: 'Product 1', price: 10, quantity: 2 }
-  ],
+  items: [],
 };
 
-// Rules
-// Do NOT mutate original cart or cart.items.
-// item should have а shape: { id, name, price, quantity }.
-
 function createEmptyCart() {
-  /* ... */
+  const newCart = {
+    items: [],
+  };
+  return newCart;
 }
-// returns { items: [] }
 
-function addItem(cart, item) {
-  /* ... */
+function addItem(cart, item, price) {
+  const isSuchProduct = cart.items.find((product) => product.name === item);
+  // There is NO such product
+  if (isSuchProduct === undefined) {
+    let lastId = cart.items.length;
+    let lastQuantity = cart.items.find((product) => product.name === item);
+    cart.items.push({
+      id: lastId + 1,
+      name: item,
+      price: price,
+      quantity: lastQuantity === undefined ? 1 : lastQuantity.quantity + 1,
+    });
+    // There is such product - should update quantity and price only
+  } else {
+    isSuchProduct.price = price;
+    isSuchProduct.quantity++;
+  }
 }
-// if item with same id exists → increase quantity
-// else → push new item
-// returns NEW cart object
 
 function removeItem(cart, itemId) {
-  /* ... */
+  const findItem = cart.items.forEach((item) => {
+    if (item.id === itemId) {
+      let index = cart.items.findIndex((item) => item.id === itemId);
+      cart.items.splice(index, 1);
+    }
+  });
 }
 // removes item with given id (if exists)
 // returns NEW cart object
@@ -40,3 +53,13 @@ function clearCart(cart) {
   /* ... */
 }
 // returns NEW cart { items: [] }
+
+// Testing
+let firstCart = createEmptyCart();
+addItem(firstCart, 'sirene', 5);
+addItem(firstCart, 'hlqb', 5);
+addItem(firstCart, 'mlqko', 5);
+addItem(firstCart, 'sirene', 5);
+addItem(firstCart, 'airqn', 5);
+addItem(firstCart, 'bira', 5);
+removeItem(firstCart, 4);
