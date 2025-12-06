@@ -56,3 +56,12 @@ function getTotalPrice(cart) {
 function clearCart(cart) {
   cart.items = [];
 }
+
+export {
+  createEmptyCart,
+  addItem,
+  removeItem,
+  getTotalPrice,
+  getTotalQuantity,
+  clearCart,
+};

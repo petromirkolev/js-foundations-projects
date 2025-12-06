@@ -4,31 +4,32 @@ const settings = {
   notifications: true, // boolean
 };
 
-// Rules
-// Do NOT mutate the original settings object.
-// Validate input as needed (basic check: object + existing keys).
-
 function createDefaultSettings() {
-  /* ... */
+  const userSettings = JSON.parse(JSON.stringify(settings));
+  return userSettings;
 }
-// returns default settings object (light, en, true)
 
 function updateTheme(settings, theme) {
-  /* ... */
+  settings.theme = theme;
 }
-// returns NEW settings object with updated theme
 
 function toggleNotifications(settings) {
-  /* ... */
+  settings.notifications = !settings.notifications;
 }
-// returns NEW settings object with notifications flipped
 
 function setLanguage(settings, language) {
-  /* ... */
+  settings.language = language;
 }
-// returns NEW settings object with new language
 
 function cloneSettings(settings) {
-  /* ... */
+  const clonedSettings = Object.assign({}, settings);
+  return clonedSettings;
 }
-// returns a shallow copy of settings
+
+export {
+  createDefaultSettings,
+  updateTheme,
+  toggleNotifications,
+  setLanguage,
+  cloneSettings,
+};
