@@ -11,7 +11,7 @@ function createEmptyCart() {
 
 function addItem(cart, item, price) {
   const isSuchProduct = cart.items.find((product) => product.name === item);
-  // There is NO such product
+  // There is NO such product - add it
   if (isSuchProduct === undefined) {
     let lastId = cart.items.length;
     let lastQuantity = cart.items.find((product) => product.name === item);
