@@ -23,60 +23,60 @@ import {
   cloneSettings,
 } from '../src/userSettings.js';
 
-//// Counter tests
-console.log('--- COUNTER EXAMPLES ---');
-let c = createCounter(5);
-// Expect: 5
-console.log(getValue(c));
-c = increment(c);
-// Expect 6
-console.log(getValue(c));
-c = reset(c);
-// Expect 0
-console.log(getValue(c));
+// //// Counter tests
+// console.log('--- COUNTER EXAMPLES ---');
+// let c = createCounter(5);
+// // Expect: 5
+// console.log(getValue(c));
+// c = increment(c);
+// // Expect 6
+// console.log(getValue(c));
+// c = reset(c);
+// // Expect 0
+// console.log(getValue(c));
 
-//// User settings tests
-console.log('--- USER SETTINGS EXAMPLES ---');
+// //// User settings tests
+// console.log('--- USER SETTINGS EXAMPLES ---');
 
-let settings = createDefaultSettings();
-console.log('Default settings:', settings);
-// Expect: { theme: 'light', language: 'en', notifications: true }
+// let settings = createDefaultSettings();
+// console.log('Default settings:', settings);
+// // Expect: { theme: 'light', language: 'en', notifications: true }
 
-// Change theme
-const darkSettings = updateTheme(settings, 'dark');
-console.log('After updateTheme to dark:', darkSettings);
-// Expect: theme: 'dark'
-console.log('Original settings still light? (immutability check):', settings);
-// Expect: theme: 'light'
+// // Change theme
+// const darkSettings = updateTheme(settings, 'dark');
+// console.log('After updateTheme to dark:', darkSettings);
+// // Expect: theme: 'dark'
+// console.log('Original settings still light? (immutability check):', settings);
+// // Expect: theme: 'light'
 
-// Toggle notifications
-const toggledOnce = toggleNotifications(settings);
-console.log('Toggled notifications once:', toggledOnce);
-// Expect: notifications: false (if default was true)
-const toggledTwice = toggleNotifications(toggledOnce);
-console.log('Toggled notifications twice:', toggledTwice);
-// Expect: notifications back to true
+// // Toggle notifications
+// const toggledOnce = toggleNotifications(settings);
+// console.log('Toggled notifications once:', toggledOnce);
+// // Expect: notifications: false (if default was true)
+// const toggledTwice = toggleNotifications(toggledOnce);
+// console.log('Toggled notifications twice:', toggledTwice);
+// // Expect: notifications back to true
 
-// Change language
-const bgSettings = setLanguage(settings, 'bg');
-console.log('Language set to bg:', bgSettings);
-// Expect: language: 'bg'
-console.log('Original settings language still en?:', settings);
-// Expect: 'en' if not mutated
+// // Change language
+// const bgSettings = setLanguage(settings, 'bg');
+// console.log('Language set to bg:', bgSettings);
+// // Expect: language: 'bg'
+// console.log('Original settings language still en?:', settings);
+// // Expect: 'en' if not mutated
 
-// Clone settings
-const cloned = cloneSettings(settings);
-console.log('Cloned settings:', cloned);
-// Expect: same values as settings
+// // Clone settings
+// const cloned = cloneSettings(settings);
+// console.log('Cloned settings:', cloned);
+// // Expect: same values as settings
 
-// Mutate clone and ensure original unchanged
-cloned.theme = 'dark';
-console.log('Mutated clone theme to dark:', cloned);
-console.log(
-  'Original settings after clone mutation (should stay light):',
-  settings
-);
-// If original theme changed = you’re not truly cloning correctly
+// // Mutate clone and ensure original unchanged
+// cloned.theme = 'dark';
+// console.log('Mutated clone theme to dark:', cloned);
+// console.log(
+//   'Original settings after clone mutation (should stay light):',
+//   settings
+// );
+// // If original theme changed = you’re not truly cloning correctly
 
 //// Cart tests
 console.log('--- CART EXAMPLES ---');
