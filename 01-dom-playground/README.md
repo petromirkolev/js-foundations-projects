@@ -39,7 +39,3 @@ A minimal interactive page to practice DOM manipulation, events, and basic state
 ## ▶️ Running the Project
 
 Open `index.html` in any browser.
-
----
-
-## 📁 Files

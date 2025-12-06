@@ -47,3 +47,9 @@ See examples/examples.js for usage and sample flows.
 - working with collections of objects (items in a cart)
 - deriving values from state (totals, counts)
 - keeping business logic separate from I/O (console.log only in examples)
+
+## How to run tests
+
+```bash
+node examples.js
+```
