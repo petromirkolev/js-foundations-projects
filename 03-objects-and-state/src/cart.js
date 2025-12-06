@@ -23,7 +23,7 @@ function addItem(cart, item, price) {
     });
     // There is such product - should update quantity and price only
   } else {
-    isSuchProduct.price = price;
+    isSuchProduct.price += price;
     isSuchProduct.quantity++;
   }
 }
@@ -36,30 +36,23 @@ function removeItem(cart, itemId) {
     }
   });
 }
-// removes item with given id (if exists)
-// returns NEW cart object
 
 function getTotalQuantity(cart) {
-  /* ... */
+  let totalQuantity = 0;
+  cart.items.forEach((item) => {
+    totalQuantity += item.quantity;
+  });
+  return totalQuantity;
 }
-// sum of all quantities
 
 function getTotalPrice(cart) {
-  /* ... */
+  let totalPrice = 0;
+  cart.items.forEach((item) => {
+    totalPrice += item.price;
+  });
+  return totalPrice;
 }
-// sum of price * quantity
 
 function clearCart(cart) {
-  /* ... */
+  cart.items = [];
 }
-// returns NEW cart { items: [] }
-
-// Testing
-let firstCart = createEmptyCart();
-addItem(firstCart, 'sirene', 5);
-addItem(firstCart, 'hlqb', 5);
-addItem(firstCart, 'mlqko', 5);
-addItem(firstCart, 'sirene', 5);
-addItem(firstCart, 'airqn', 5);
-addItem(firstCart, 'bira', 5);
-removeItem(firstCart, 4);
