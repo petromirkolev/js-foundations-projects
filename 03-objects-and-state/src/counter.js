@@ -1,26 +1,24 @@
 const counter = { value: 0 };
 
 function createCounter(initialValue) {
-  if (Number(initialValue) >= 0) {
-    const newCounter = {
-      value: initialValue,
-    };
-    return newCounter;
-  } else {
+  if (Number.isNaN(initialValue) || typeof initialValue !== 'number') {
     throw Error('Only numbers are accepted as input!');
   }
+  return {
+    value: initialValue,
+  };
 }
 
 function increment(counter) {
-  return counter.value++;
+  return { value: counter.value + 1 };
 }
 
 function decrement(counter) {
-  return counter.value--;
+  return { value: counter.value - 1 };
 }
 
-function reset(counter) {
-  return (counter.value = 0);
+function reset() {
+  return { value: 0 };
 }
 
 function getValue(counter) {

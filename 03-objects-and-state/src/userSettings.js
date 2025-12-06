@@ -5,25 +5,23 @@ const settings = {
 };
 
 function createDefaultSettings() {
-  const userSettings = JSON.parse(JSON.stringify(settings));
-  return userSettings;
+  return { ...settings };
 }
 
 function updateTheme(settings, theme) {
-  settings.theme = theme;
+  return { ...settings, theme };
 }
 
 function toggleNotifications(settings) {
-  settings.notifications = !settings.notifications;
+  return { ...settings, notifications: !settings.notifications };
 }
 
 function setLanguage(settings, language) {
-  settings.language = language;
+  return { ...settings, language };
 }
 
 function cloneSettings(settings) {
-  const clonedSettings = Object.assign({}, settings);
-  return clonedSettings;
+  return { ...settings };
 }
 
 export {

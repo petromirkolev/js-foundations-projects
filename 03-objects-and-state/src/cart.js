@@ -3,58 +3,38 @@ const cart = {
 };
 
 function createEmptyCart() {
-  const newCart = {
-    items: [],
-  };
-  return newCart;
+  return { items: [] };
 }
 
-function addItem(cart, item, price) {
-  const isSuchProduct = cart.items.find((product) => product.name === item);
-  // There is NO such product - add it
-  if (isSuchProduct === undefined) {
-    let lastId = cart.items.length;
-    let lastQuantity = cart.items.find((product) => product.name === item);
-    cart.items.push({
-      id: lastId + 1,
-      name: item,
-      price: price,
-      quantity: lastQuantity === undefined ? 1 : lastQuantity.quantity + 1,
-    });
-    // There is such product - should update quantity and price only
-  } else {
-    isSuchProduct.price += price;
-    isSuchProduct.quantity++;
+function addItem(cart, item) {
+  const exists = cart.items.find((exists) => exists.id === item.id);
+
+  if (!exists) {
+    return { ...cart, items: [...cart.items, item] };
   }
+  const updated = cart.items.map((current) =>
+    current.id === item.id
+      ? { ...current, quantity: current.quantity + item.quantity }
+      : current
+  );
+  return { ...cart, items: updated };
 }
 
 function removeItem(cart, itemId) {
-  const findItem = cart.items.forEach((item) => {
-    if (item.id === itemId) {
-      let index = cart.items.findIndex((item) => item.id === itemId);
-      cart.items.splice(index, 1);
-    }
-  });
+  const newItems = cart.items.filter((item) => item.id !== itemId);
+  return { ...cart, items: newItems };
 }
 
 function getTotalQuantity(cart) {
-  let totalQuantity = 0;
-  cart.items.forEach((item) => {
-    totalQuantity += item.quantity;
-  });
-  return totalQuantity;
+  return cart.items.reduce((sum, item) => sum + item.quantity, 0);
 }
 
 function getTotalPrice(cart) {
-  let totalPrice = 0;
-  cart.items.forEach((item) => {
-    totalPrice += item.price;
-  });
-  return totalPrice;
+  return cart.items.reduce((sum, item) => sum + item.price * item.quantity, 0);
 }
 
 function clearCart(cart) {
-  cart.items = [];
+  return { ...cart, items: [] };
 }
 
 export {
