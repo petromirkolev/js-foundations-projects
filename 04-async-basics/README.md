@@ -48,13 +48,6 @@ totalSpent: number
 }
 
 - throws if user does not exist
-  📁 Files
-  04-async-basics/
-  delay.js
-  fakeApi.js
-  examples.js
-  README.md
-  package.json // { "type": "module" }
 
 ## 📘 Examples
 
