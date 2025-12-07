@@ -31,7 +31,6 @@ fetchUser('u1')
   .then((user) => {
     console.log('User u1 resolved:', user);
     // Expect: user.id === 'u1'
-    // Expect: user.name === 'Alice' (if using the README example data)
   })
   .catch((err) => {
     console.log('Unexpected error for u1:', err.message);
@@ -61,7 +60,7 @@ async function runDashboardExamples() {
     console.log('Dashboard for u1:', dashboard);
     // Expect:
     // dashboard.user.id === 'u1'
-    // dashboard.orders is an array (length depends on your data)
+    // dashboard.orders is an array
     // dashboard.totalSpent === sum of order.total values for user 'u1'
   } catch (err) {
     console.log('Unexpected error fetching dashboard for u1:', err.message);
