@@ -53,7 +53,6 @@ runErrorExamples();
 console.log('\n--- ABORT CONTROLLER EXAMPLE ---');
 
 async function runAbortExample() {
-  // You will implement apiClient.getJson so it accepts { signal }.
   const controller = new AbortController();
   const url = 'https://jsonplaceholder.typicode.com/posts';
   const promise = getJson(url, { signal: controller.signal });
