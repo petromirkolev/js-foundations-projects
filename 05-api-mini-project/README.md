@@ -61,3 +61,9 @@ See `examples.js` for usage and flows.
 - distinguishing “HTTP error” vs “network/abort error”
 - using AbortController with fetch to cancel requests
 - structuring API calls like you will later validate in QA tests
+
+## How to run tests
+
+```bash
+node examples.js
+```

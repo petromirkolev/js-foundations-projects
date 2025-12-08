@@ -28,3 +28,9 @@ State shape:
   error: null | string
 }
 ```
+
+## How to run tests
+
+```bash
+node examples.js
+```
