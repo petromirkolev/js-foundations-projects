@@ -12,41 +12,51 @@ function startPolling(url, config, onUpdate) {
   let state = createInitialState();
   let stopped = false;
   let timeoutId = null;
-
-  if (stopped) return;
+  onUpdate(state);
 
   async function load() {
+    if (stopped) return;
+
     state = markPolling(state);
     onUpdate(state);
-
-    if (state.attempts > config.maxAttempts) {
-      state = markStopped(state);
-      onUpdate(state);
-      return;
-    }
 
     try {
       const result = await getJson(url);
       state = markSuccess(state, result);
       onUpdate(state);
-    } catch (err) {
-      state = markError(state, err.message);
+    } catch (error) {
+      state = markError(state, error.message);
       onUpdate(state);
       state = markStopped(state);
       onUpdate(state);
+      stopped = true;
       return;
     }
+
+    if (stopped) return;
+
+    if (state.attempts >= config.maxAttempts) {
+      state = markStopped(state);
+      onUpdate(state);
+      stopped = true;
+      return;
+    }
+
+    timeoutId = setTimeout(load, config.intervalMs);
   }
 
-  const stop = function () {
+  function stop() {
+    if (stopped) return;
     stopped = true;
-    timeoutId = null;
+    if (timeoutId !== null) {
+      clearTimeout(timeoutId);
+      timeoutId = null;
+    }
     state = markStopped(state);
     onUpdate(state);
-    return { stop };
-  };
-
+  }
   load();
+  return { stop };
 }
 
 export { startPolling };
