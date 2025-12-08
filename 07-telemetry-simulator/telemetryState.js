@@ -9,23 +9,32 @@
 // }
 
 function createInitialState() {
-  // TODO: return the initial telemetry state
+  return {
+    status: 'idle',
+    samples: 0,
+    lastValue: null,
+    min: null,
+    max: null,
+    error: null,
+  };
 }
 
 function markRunning(state) {
-  // TODO: return new state with status 'running' and samples + 1
+  return { ...state, status: 'running', samples: state.samples + 1 };
 }
 
 function applySample(state, value) {
-  // TODO: return new state with updated lastValue, min, max
+  const newMin = state.min === null ? value : Math.min(state.min, value);
+  const newMax = state.max === null ? value : Math.max(state.max, value);
+  return { ...state, lastValue: value, min: newMin, max: newMax };
 }
 
 function markError(state, message) {
-  // TODO: return new state with status 'error' and error message
+  return { ...state, status: 'error', error: message };
 }
 
 function markStopped(state) {
-  // TODO: return new state with status 'stopped'
+  return { ...state, status: 'stopped' };
 }
 
 export { createInitialState, markRunning, applySample, markError, markStopped };
