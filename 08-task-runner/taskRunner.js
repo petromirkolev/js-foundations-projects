@@ -7,13 +7,6 @@ import {
   markDone,
 } from './runnerState.js';
 
-/**
- * Run tasks sequentially: task 0, then 1, then 2, ...
- * tasks: array of async functions: async () => any
- * onUpdate: (state) => void
- *
- * Returns: { stop }
- */
 function runSequential(tasks, onUpdate) {
   const total = tasks.length;
   let state = createInitialState(total);
@@ -32,12 +25,23 @@ function runSequential(tasks, onUpdate) {
     state = markRunning(state);
     onUpdate(state);
 
-    // TODO:
-    // 1. loop over tasks
-    // 2. for each task:
-    //    - if stopped → break
-    //    - try { await task(); markTaskSuccess } catch { markTaskError; break or stop }
-    // 3. if all tasks finished successfully → markDone
+    for (let i = 0; i < tasks.length; i++) {
+      if (stopped) break;
+      const task = tasks[i];
+      try {
+        const currentTask = await task();
+        state = markTaskSuccess(state, currentTask);
+        onUpdate(state);
+      } catch (error) {
+        state = markTaskError(state, error);
+        onUpdate(state);
+        break;
+      }
+    }
+    if (state.completed === total) {
+      state = markDone(state);
+      onUpdate(state);
+    }
   }
 
   function stop() {
@@ -52,23 +56,13 @@ function runSequential(tasks, onUpdate) {
   return { stop };
 }
 
-/**
- * Run tasks in parallel with a concurrency limit.
- *
- * tasks: array of async functions: async () => any
- * concurrency: max number of tasks running at once
- * onUpdate: (state) => void
- *
- * Returns: { stop }
- */
 function runParallel(tasks, concurrency, onUpdate) {
   const total = tasks.length;
   let state = createInitialState(total);
   let stopped = false;
-
-  let inFlight = 0; // how many tasks currently running
-  let index = 0; // next task index to start
-  let doneCount = 0; // completed + errored tasks
+  let inFlight = 0;
+  let index = 0;
+  let doneCount = 0;
 
   onUpdate(state);
 
@@ -77,7 +71,7 @@ function runParallel(tasks, concurrency, onUpdate) {
 
   async function startNext() {
     if (stopped) return;
-    if (index >= total) return; // no more tasks to start
+    if (index >= total) return;
     if (inFlight >= concurrency) return;
 
     const currentIndex = index;
@@ -92,28 +86,24 @@ function runParallel(tasks, concurrency, onUpdate) {
     } catch (err) {
       state = markTaskError(state, err);
       onUpdate(state);
-      // Depending on design: you might want to stop everything on first error
-      // For now, just continue.
     } finally {
       inFlight--;
       doneCount++;
 
-      // If all tasks done → markDone
       if (doneCount >= total) {
         if (!stopped) {
-          state = markDone(state);
+          if (state.status !== 'error') {
+            state = markDone(state);
+          }
           onUpdate(state);
         }
         return;
       }
-
-      // Start more tasks if possible
       startNext();
     }
   }
 
   function kickOff() {
-    // Try to start up to 'concurrency' initial tasks
     for (let i = 0; i < concurrency; i++) {
       startNext();
     }
@@ -124,7 +114,6 @@ function runParallel(tasks, concurrency, onUpdate) {
     stopped = true;
     state = markStopped(state);
     onUpdate(state);
-    // Running tasks will still finish, but no new tasks will be started.
   }
 
   kickOff();
