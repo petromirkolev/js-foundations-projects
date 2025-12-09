@@ -6,7 +6,7 @@ A minimal interactive page to practice DOM manipulation, events, and basic state
 
 ### 1. Live Text Mirror
 
-- Input field updates a display `<div>` as the user types.
+- Input field updates a display "<div>" as the user types.
 
 ### 2. Click Counter
 
@@ -20,15 +20,15 @@ A minimal interactive page to practice DOM manipulation, events, and basic state
 
 ### 4. Dynamic List
 
-- Add text items to a `<ul>` list.
+- Add text items to a "<ul>" list.
 - Optional: filter list using a second input.
 
 ---
 
 ## 🧠 Concepts Practiced
 
-- `document.querySelector`
-- Event listeners (`click`, `input`)
+- "document.querySelector"
+- Event listeners ("click", "input")
 - Updating text and classes
 - Creating/removing DOM elements
 - Basic state management
@@ -38,4 +38,4 @@ A minimal interactive page to practice DOM manipulation, events, and basic state
 
 ## ▶️ Running the Project
 
-Open `index.html` in any browser.
+Open "index.html" in any browser.
