@@ -7,7 +7,7 @@ Small utility functions that demonstrate how core array operations work under th
 Reimplement a subset of common array methods using plain loops:
 
 - No "Array.prototype.map", "filter", etc. inside implementations.
-- Functions are **pure** and **do not mutate** input arrays.
+- Functions are pure and do not mutate input arrays.
 - Each function has several example calls.
 
 ## ✅ Implemented functions
@@ -18,7 +18,7 @@ Reimplement a subset of common array methods using plain loops:
 - "sortArray(array, compareFn)"
 - "findInArray(array, predicate)"
 
-See "examples/examples.js" for usage.
+See "index.js" for usage.
 
 ## 🧠 Concepts practiced
 
@@ -34,5 +34,5 @@ See "examples/examples.js" for usage.
 From the project root:
 
 ```bash
-node examples/examples.js
+node index.js
 ```
