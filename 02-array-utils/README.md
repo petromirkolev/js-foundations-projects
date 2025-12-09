@@ -34,5 +34,5 @@ See "index.js" for usage.
 From the project root:
 
 ```bash
-node index.js
+node src/index.js
 ```
