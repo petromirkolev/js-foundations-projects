@@ -5,7 +5,7 @@ import {
   getTotalPrice,
   getTotalQuantity,
   clearCart,
-} from '../src/cart.js';
+} from './src/cart.js';
 
 import {
   createCounter,
@@ -13,7 +13,7 @@ import {
   decrement,
   reset,
   getValue,
-} from '../src/counter.js';
+} from './src/counter.js';
 
 import {
   createDefaultSettings,
@@ -21,7 +21,7 @@ import {
   toggleNotifications,
   setLanguage,
   cloneSettings,
-} from '../src/userSettings.js';
+} from './src/userSettings.js';
 
 //// Counter tests
 console.log('--- COUNTER EXAMPLES ---');

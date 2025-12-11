@@ -1,7 +1,6 @@
-// Implement Array.prototype.sort() with a pure function
 export function sortArray(array, compareFn) {
   if (!Array.isArray(array)) {
-    throw new TypeError('Expected an array');
+    console.log('Error: Array expected');
   }
   let result = array;
   for (let i = 0; i < array.length; i++) {
@@ -16,6 +15,3 @@ export function sortArray(array, compareFn) {
   }
   return result;
 }
-
-// Testing
-// console.log(sortArray([12, 34, 45, 56, 23], (x, y) => y - x));

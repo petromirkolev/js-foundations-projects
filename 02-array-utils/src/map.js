@@ -1,14 +1,14 @@
-// Implement Array.prototype.map() with a pure function
 export function mapArray(array, callback) {
-  if (!Array.isArray(array)) {
-    throw new TypeError('Expected an array');
+  let currentArray = array;
+  let result = [];
+
+  if (Array.isArray(currentArray)) {
+    for (let i = 0; i < array.length; i++) {
+      const item = array[i];
+      result.push(callback(item));
+    }
+    return result;
+  } else {
+    return console.error('Error: Array is expected as input');
   }
-  const result = [];
-  for (let i = 0; i < array.length; i++) {
-    const item = array[i];
-    result.push(callback(item));
-  }
-  return result;
 }
-// Testing
-// console.log(mapArray([1, 34, 5, 6, 78, 345, 34], (x) => x + 2));

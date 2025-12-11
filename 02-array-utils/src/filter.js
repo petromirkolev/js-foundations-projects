@@ -1,7 +1,6 @@
-// Implement Array.prototype.filter() with a pure function
 export function filterArray(array, callback) {
   if (!Array.isArray(array)) {
-    throw new TypeError('Expected an array');
+    console.log('Error: Array expected');
   }
   const filteredArray = [];
   for (let i = 0; i < array.length; i++) {
@@ -12,6 +11,3 @@ export function filterArray(array, callback) {
   }
   return filteredArray;
 }
-
-// Testing
-// console.log(filterArray([9, 4, 5, 2, 1, 3, 6, 8, 7, 10], (x) => x % 2 === 0));
