@@ -8,7 +8,6 @@ import {
 
 import { startPolling } from './apiPoller.js';
 
-//
 // -------------------------------------------
 // POLLER STATE EXAMPLES
 // -------------------------------------------
@@ -16,25 +15,19 @@ console.log('\n--- POLLER STATE EXAMPLES ---');
 
 const initial = createInitialState();
 console.log('Initial state:', initial);
-// Expect: status 'idle', attempts 0, lastResult null, error null
 
 const p1 = markPolling(initial);
 console.log('After markPolling:', p1);
-// Expect: status 'polling', attempts 1
 
 const p2 = markSuccess(p1, { foo: 'bar' });
 console.log('After markSuccess:', p2);
-// Expect: status 'polling', lastResult { foo: 'bar' }
 
 const p3 = markError(p2, 'Something went wrong');
 console.log('After markError:', p3);
-// Expect: status 'error', error 'Something went wrong'
 
 const p4 = markStopped(p3);
 console.log('After markStopped:', p4);
-// Expect: status 'stopped'
 
-//
 // -------------------------------------------
 // API POLLER EXAMPLE – NORMAL COMPLETION
 // -------------------------------------------
@@ -51,12 +44,7 @@ const poller1 = startPolling(
   { intervalMs: 1000, maxAttempts: 3 },
   logUpdate1
 );
-// Expect:
-// initial 'idle'
-// then 3 rounds of 'polling'
-// then 'stopped'
 
-//
 // -------------------------------------------
 // API POLLER EXAMPLE – MANUAL STOP
 // -------------------------------------------
@@ -73,9 +61,7 @@ setTimeout(() => {
   console.log('Calling poller2.stop()');
   poller2.stop();
 }, 2500);
-// Expect: stops early → final state 'stopped'
 
-//
 // -------------------------------------------
 // API POLLER EXAMPLE – ERROR CASE
 // -------------------------------------------
@@ -96,4 +82,3 @@ const poller3 = startPolling(
       state.error
     )
 );
-// Expect: first polling → then error → then stop
