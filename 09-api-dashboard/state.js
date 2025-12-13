@@ -1,4 +1,3 @@
-// Basic state object factory
 function createInitialState(options = {}) {
   const { pageSize = 5 } = options;
   const state = {
@@ -21,7 +20,6 @@ function createInitialState(options = {}) {
   return state;
 }
 
-// Helper to deep clone state object
 function cloneState(state) {
   return JSON.parse(JSON.stringify(state));
 }
@@ -143,7 +141,6 @@ function updateView(state) {
   const startIndex = (currentPage - 1) * pageSize;
   const endIndex = startIndex + pageSize;
   const itemsOnPage = filtered.slice(startIndex, endIndex);
-
   return { ...cloned, view: { ...cloned.view, itemsOnPage } };
 }
 
