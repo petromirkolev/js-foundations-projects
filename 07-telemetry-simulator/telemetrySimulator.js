@@ -10,12 +10,10 @@ function startTelemetry(config, onUpdate) {
   let state = createInitialState();
   let stopped = false;
   let timeoutId = null;
-
   onUpdate(state);
 
   async function tick() {
     if (stopped) return;
-
     if (Math.random() < config.errorRate) {
       state = markError(state, 'Simulated sensor failure');
       onUpdate(state);
@@ -50,7 +48,6 @@ function startTelemetry(config, onUpdate) {
       stopped = true;
       return;
     }
-
     timeoutId = setTimeout(tick, config.intervalMs);
   }
 
@@ -66,7 +63,6 @@ function startTelemetry(config, onUpdate) {
   }
 
   tick();
-
   return { stop };
 }
 

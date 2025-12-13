@@ -1,13 +1,3 @@
-// Telemetry state shape:
-// {
-//   status: 'idle' | 'running' | 'stopped' | 'error',
-//   samples: number,
-//   lastValue: number | null,
-//   min: number | null,
-//   max: number | null,
-//   error: string | null
-// }
-
 function createInitialState() {
   return {
     status: 'idle',
