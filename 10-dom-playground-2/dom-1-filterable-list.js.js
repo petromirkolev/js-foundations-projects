@@ -1,5 +1,7 @@
 const state = {
   query: '',
+  newName: '',
+  nextId: 6,
   items: [
     { id: 1, name: 'Auth' },
     { id: 2, name: 'Payments' },
@@ -12,6 +14,8 @@ const state = {
 const queryEl = document.querySelector('#query');
 const listEl = document.querySelector('#list');
 const metaEl = document.querySelector('#meta');
+const formEl = document.querySelector('#addForm');
+const newNameEl = document.querySelector('#newName');
 
 function selectFilteredItems(state) {
   const q = state.query.trim().toLowerCase();
@@ -36,4 +40,18 @@ render(state);
 queryEl.addEventListener('input', (e) => {
   state.query = e.target.value;
   render(state);
+});
+
+newNameEl.addEventListener('input', (e) => {
+  state.newName = e.target.value;
+});
+
+formEl.addEventListener('submit', (e) => {
+  e.preventDefault();
+
+  const name = state.newName.trim();
+  if (name === '') return;
+  // TODO: add item
+  // TODO: reset input + state.newName
+  // TODO: render(state)
 });
