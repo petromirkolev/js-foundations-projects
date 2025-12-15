@@ -28,8 +28,17 @@ function render(state) {
   metaEl.textContent = `Showing ${filtered.length} of ${state.items.length}`;
   listEl.textContent = '';
   filtered.forEach((item) => {
-    let listItem = document.createElement('li');
-    listItem.textContent = item.name;
+    const listItem = document.createElement('li');
+
+    const spanItem = document.createElement('span');
+    spanItem.textContent = item.name;
+
+    const buttonItem = document.createElement('button');
+    buttonItem.textContent = 'Remove';
+    buttonItem.dataset.id = String(item.id);
+
+    listItem.appendChild(spanItem);
+    listItem.appendChild(buttonItem);
     listEl.appendChild(listItem);
   });
 }
@@ -56,5 +65,11 @@ formEl.addEventListener('submit', (e) => {
   state.items.push({ id: state.nextId, name });
   state.nextId++;
   newNameEl.value = state.newName = '';
+  render(state);
+});
+
+listEl.addEventListener('click', (e) => {
+  if (e.target.tagName !== 'BUTTON') return;
+  state.items = state.items.filter((item) => item.id !== +e.target.dataset.id);
   render(state);
 });
