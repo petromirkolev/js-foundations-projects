@@ -41,11 +41,12 @@ function render(state) {
     listItem.appendChild(buttonItem);
     listEl.appendChild(listItem);
   });
+  const buttons = listEl.querySelectorAll('button[data-id]');
+  console.log('Remove buttons:', buttons.length);
 }
 
 render(state);
 
-// input event -> update state -> render
 queryEl.addEventListener('input', (e) => {
   state.query = e.target.value;
   render(state);

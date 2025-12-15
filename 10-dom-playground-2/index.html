@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -21,5 +21,38 @@
     </form>
     <ul id="list"></ul>
     <script type="module" src="dom-1-filterable-list.js"></script>
+  </body>
+</html> -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>DOM 3 — Event Propagation</title>
+    <style>
+      .outer {
+        padding: 20px;
+        background: #e3e3e3;
+      }
+      .middle {
+        padding: 20px;
+        background: #cfcfcf;
+      }
+      .inner {
+        padding: 20px;
+        background: #b5b5b5;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="outer">
+      OUTER
+      <div class="middle">
+        MIDDLE
+        <div class="inner">INNER (click me)</div>
+      </div>
+    </div>
+    <script src="./dom-3-propagation.js"></script>
   </body>
 </html>
