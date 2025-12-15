@@ -48,10 +48,13 @@ newNameEl.addEventListener('input', (e) => {
 
 formEl.addEventListener('submit', (e) => {
   e.preventDefault();
-
+  state.newName = newNameEl.value;
   const name = state.newName.trim();
+
   if (name === '') return;
-  // TODO: add item
-  // TODO: reset input + state.newName
-  // TODO: render(state)
+
+  state.items.push({ id: state.nextId, name });
+  state.nextId++;
+  newNameEl.value = state.newName = '';
+  render(state);
 });
