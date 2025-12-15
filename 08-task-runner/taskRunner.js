@@ -11,7 +11,6 @@ function runSequential(tasks, onUpdate) {
   const total = tasks.length;
   let state = createInitialState(total);
   let stopped = false;
-
   onUpdate(state);
 
   async function run() {
@@ -52,7 +51,6 @@ function runSequential(tasks, onUpdate) {
   }
 
   run();
-
   return { stop };
 }
 
@@ -65,7 +63,6 @@ function runParallel(tasks, concurrency, onUpdate) {
   let doneCount = 0;
 
   onUpdate(state);
-
   state = markRunning(state);
   onUpdate(state);
 
@@ -117,7 +114,6 @@ function runParallel(tasks, concurrency, onUpdate) {
   }
 
   kickOff();
-
   return { stop };
 }
 

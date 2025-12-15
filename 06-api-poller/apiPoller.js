@@ -39,6 +39,7 @@ function startPolling(url, config, onUpdate) {
     }
     timeoutId = setTimeout(load, config.intervalMs);
   }
+
   function stop() {
     if (stopped) return;
     stopped = true;
@@ -49,6 +50,7 @@ function startPolling(url, config, onUpdate) {
     state = markStopped(state);
     onUpdate(state);
   }
+
   load();
   return { stop };
 }

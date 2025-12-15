@@ -8,7 +8,6 @@ import {
 
 import { startTelemetry } from './telemetrySimulator.js';
 
-//
 // -------------------------------------------
 // TELEMETRY STATE EXAMPLES
 // -------------------------------------------
@@ -16,33 +15,25 @@ console.log('\n--- TELEMETRY STATE EXAMPLES ---');
 
 let state = createInitialState();
 console.log('Initial state:', state);
-// Expect: status 'idle', samples 0, lastValue/min/max/error null
 
 state = markRunning(state);
 console.log('After markRunning:', state);
-// Expect: status 'running', samples 1
 
 state = applySample(state, 10);
 console.log('After applySample(10):', state);
-// Expect: lastValue 10, min 10, max 10
 
 state = applySample(state, 12);
 console.log('After applySample(12):', state);
-// Expect: lastValue 12, min 10, max 12
 
 state = applySample(state, 8);
 console.log('After applySample(8):', state);
-// Expect: lastValue 8, min 8, max 12
 
 state = markError(state, 'Test error');
 console.log('After markError:', state);
-// Expect: status 'error', error 'Test error'
 
 state = markStopped(state);
 console.log('After markStopped:', state);
-// Expect: status 'stopped'
 
-//
 // -------------------------------------------
 // TELEMETRY SIMULATOR EXAMPLE – NORMAL RUN
 // -------------------------------------------
@@ -73,9 +64,6 @@ const telemetry1 = startTelemetry(
   }
 );
 
-// Expect: idle → several running updates → stopped after 5 samples
-
-//
 // -------------------------------------------
 // TELEMETRY SIMULATOR EXAMPLE – ERROR RUN
 // -------------------------------------------
@@ -108,9 +96,6 @@ const telemetry2 = startTelemetry(
   }
 );
 
-// Expect: eventually an 'error' status followed by 'stopped', and no more updates
-
-//
 // -------------------------------------------
 // TELEMETRY SIMULATOR EXAMPLE – MANUAL STOP
 // -------------------------------------------
@@ -141,5 +126,3 @@ setTimeout(() => {
   console.log('Calling telemetry3.stop()');
   telemetry3.stop();
 }, 2000);
-
-// Expect: updates for ~2 seconds, then final 'stopped' state and no further updates

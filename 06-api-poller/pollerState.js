@@ -1,11 +1,3 @@
-// Poller state shape:
-// {
-//   status: 'idle' | 'polling' | 'stopped' | 'error',
-//   attempts: number,
-//   lastResult: any | null,
-//   error: string | null
-// }
-
 function createInitialState() {
   return {
     status: 'idle',

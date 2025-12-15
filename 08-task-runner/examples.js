@@ -54,7 +54,7 @@ console.log('\n--- SEQUENTIAL EXAMPLE (ERROR) ---');
 
 const seqTasksError = [
   createDelayTask('A', 300),
-  createDelayTask('B', 400, true), // this one fails
+  createDelayTask('B', 400, true),
   createDelayTask('C', 200),
 ];
 
