@@ -8,7 +8,7 @@ Each folder is a **self-contained mini-project**.
 
 ---
 
-## What This Repo Shows
+## What this repo shows
 
 - JavaScript fundamentals (no frameworks)
 - State and immutability
@@ -39,7 +39,7 @@ This repository serves as a foundation for:
 - 09-api-dashboard
 - 10-dom-playground-2
 
-### Practice Projects (logic-first, minimal UI)
+### Practice projects (logic-first, minimal UI)
 
 - 11-odin-rock-paper-scissors
 - 12-odin-calculator
@@ -50,7 +50,7 @@ This repository serves as a foundation for:
 
 ---
 
-## How to Run
+## How to run
 
 Browser-based projects:
 
@@ -70,7 +70,3 @@ Node-based projects:
 - State lives in JavaScript, not the DOM
 - Errors and edge cases are handled intentionally
 - This is a **foundational learning repository**, not a polished product showcase
-
-```
-
-```
