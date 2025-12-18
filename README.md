@@ -1,80 +1,74 @@
 # JS Foundations Projects
 
-A collection of small, focused JavaScript projects built while learning core concepts: DOM, events, state, async JavaScript, and API interaction.
+A collection of **small, focused JavaScript projects** built to practice **core JS logic, state management, async behavior, and system reasoning**.
 
-This repository is intentionally simple and structured. Each folder contains a self-contained mini-project with its own README and code.
+The emphasis is on **correct behavior and debuggability**, not UI polish or frameworks.
 
----
-
-## 📂 Project Structure
-
-01-dom-playground/ → DOM, events, state </br>
-02-array-utils/ → Array methods (map, filter, reduce) </br>
-03-objects-and-state/ → Objects, functions, modularization </br>
-04-async-basics/ → Promises, async/await </br>
-05-api-mini-project/ → Fetch API, error handling, rendering results </br>
+Each folder is a **self-contained mini-project**.
 
 ---
 
-## 🎯 Purpose of This Repository
+## What This Repo Shows
 
-The goal is not to write perfect code.  
-The goal is to build practical fluency with:
+- JavaScript fundamentals (no frameworks)
+- State and immutability
+- DOM interaction (logic-first)
+- Async / await and error handling
+- API interaction and failure cases
 
-- DOM manipulation
-- event-driven programming
-- simple state management
-- async flows
-- small utilities
-- debugging and console workflows
+This repository serves as a foundation for:
 
-These skills form the foundation for:
-
-- automation testing (Playwright)
-- UI testing
+- Manual QA
+- Automation QA (Playwright)
 - API testing
-- building dashboards for IoT/robotics projects
 
 ---
 
-## 🧪 How to Run the Projects
+## Projects
 
-Most projects can be opened directly in a browser:
+### JS Foundations
 
-open index.html
+01-dom-playground
+02-array-utils
+03-objects-and-state
+04-async-basics
+05-api-mini-project
+06-api-poller
+07-telemetry-simulator
+08-task-runner
+09-api-dashboard
+10-dom-playground-2
 
-For pure JS modules:
+### Practice Projects (logic-first, minimal UI)
 
-node index.js
-
-(Requires Node.js installed.)
-
----
-
-## 🚀 Upcoming Additions
-
-- localStorage mini-project
-- simple calculator
-- fetch + UI rendering
-- error boundary examples
-- unit-testing basics (Jest)
-- telemetry dashboard prototype
-
----
-
-## 📘 Learning Path Alignment
-
-These projects follow the learning progression:
-
-1. JS Foundations
-2. DOM
-3. Async JavaScript
-4. Small Applications
-5. Testing & Automation Workflows
+11-odin-rock-paper-scissors
+12-odin-calculator
+13-odin-library
+14-odin-todo
+15-odin-weather
+16-odin-battleship
 
 ---
 
-## 🤝 Feedback / Improvements
+## How to Run
 
-This repo evolves as I learn.  
-Pull requests or suggestions are welcome.
+Browser-based projects:
+
+````open index.html
+
+
+
+Node-based projects:
+```node index.js
+
+(Node.js required for some projects.)
+
+---
+
+## Notes
+
+- Projects favor clarity over cleverness
+- State lives in JavaScript, not the DOM
+- Errors and edge cases are handled intentionally
+- This is a **foundational learning repository**, not a polished product showcase
+````
