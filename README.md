@@ -28,25 +28,25 @@ This repository serves as a foundation for:
 
 ### JS Foundations
 
-01-dom-playground
-02-array-utils
-03-objects-and-state
-04-async-basics
-05-api-mini-project
-06-api-poller
-07-telemetry-simulator
-08-task-runner
-09-api-dashboard
-10-dom-playground-2
+- 01-dom-playground
+- 02-array-utils
+- 03-objects-and-state
+- 04-async-basics
+- 05-api-mini-project
+- 06-api-poller
+- 07-telemetry-simulator
+- 08-task-runner
+- 09-api-dashboard
+- 10-dom-playground-2
 
 ### Practice Projects (logic-first, minimal UI)
 
-11-odin-rock-paper-scissors
-12-odin-calculator
-13-odin-library
-14-odin-todo
-15-odin-weather
-16-odin-battleship
+- 11-odin-rock-paper-scissors
+- 12-odin-calculator
+- 13-odin-library
+- 14-odin-todo
+- 15-odin-weather
+- 16-odin-battleship
 
 ---
 
@@ -54,12 +54,11 @@ This repository serves as a foundation for:
 
 Browser-based projects:
 
-````open index.html
-
-
+- open index.html
 
 Node-based projects:
-```node index.js
+
+- node index.js
 
 (Node.js required for some projects.)
 
@@ -71,4 +70,7 @@ Node-based projects:
 - State lives in JavaScript, not the DOM
 - Errors and edge cases are handled intentionally
 - This is a **foundational learning repository**, not a polished product showcase
-````
+
+```
+
+```
