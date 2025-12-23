@@ -2,154 +2,205 @@
 const display = document.querySelector('#display-value');
 const numButton = document.querySelectorAll('[data-digit]');
 const opButton = document.querySelectorAll('[data-op]');
-const actButton = document.querySelectorAll('[data-action]');
 const clearButton = document.querySelector('[data-action="clear"]');
 const eqButton = document.querySelector('[data-action="equals"]');
 const backButton = document.querySelector('[data-action="backspace"]');
-const percentButton = document.querySelector('[data-action="percent"]');
 const signButton = document.querySelector('[data-action="sign"]');
 const decimalButton = document.querySelector('[data-action="decimal"]');
 
 // Calculator state object
 const calcState = {
-  firstNum: 0,
-  secondNum: 0,
+  firstNum: '0',
+  secondNum: '',
   operator: null,
   result: null,
   whichNum: 'first',
 };
 
-// Enable operator buttons
+// ---------- Core math ----------
+function calculate() {
+  if (!calcState.operator) return;
+  if (calcState.secondNum === '') return;
+  const a = Number(calcState.firstNum);
+  const b = Number(calcState.secondNum);
+
+  let value;
+  switch (calcState.operator) {
+    case '+':
+      value = a + b;
+      break;
+    case '-':
+      value = a - b;
+      break;
+    case '×':
+      value = a * b;
+      break;
+    case '÷':
+      value = a / b;
+      break;
+    default:
+      return;
+  }
+
+  // Keep state as strings
+  calcState.result = String(value);
+  calcState.firstNum = calcState.result;
+  display.textContent = calcState.result;
+}
+
+// ---------- Operator buttons ----------
 function loadOpListener() {
   opButton.forEach((button) => {
     button.addEventListener('click', (e) => {
       const operator = e.target.textContent;
-      calcState.whichNum = 'second';
-      display.textContent = calcState.operator = operator;
-      if (calcState.secondNum === 0) {
-      } else {
+
+      if (calcState.operator && calcState.secondNum !== '') {
         calculate();
-        // Reset second num value
-        calcState.secondNum = 0;
+        calcState.secondNum = '';
       }
+
+      // Set new operator and move to second number entry
+      calcState.operator = operator;
+      calcState.whichNum = 'second';
+
+      // Optional: show operator or keep current number
+      display.textContent = operator;
     });
   });
 }
 
-// Enable number buttons
+// ---------- Number buttons ----------
 function loadNumListener() {
   numButton.forEach((button) => {
     button.addEventListener('click', (e) => {
       const digit = e.target.dataset.digit;
       if (isNaN(Number(digit))) return;
+
       if (calcState.whichNum === 'first') {
-        calcState.firstNum === 0
-          ? (display.textContent = calcState.firstNum = digit)
-          : (display.textContent = calcState.firstNum += digit);
-      }
-      if (calcState.whichNum === 'second') {
-        calcState.secondNum === 0
-          ? (display.textContent = calcState.secondNum = digit)
-          : (display.textContent = calcState.secondNum += digit);
+        calcState.firstNum =
+          calcState.firstNum === '0' ? digit : calcState.firstNum + digit;
+        display.textContent = calcState.firstNum;
+      } else {
+        calcState.secondNum =
+          calcState.secondNum === '' ? digit : calcState.secondNum + digit;
+        display.textContent = calcState.secondNum;
       }
     });
   });
 }
 
-// Basic calculator operations
-function calculate() {
-  switch (calcState.operator) {
-    case '+':
-      calcState.firstNum = calcState.result =
-        Number(calcState.firstNum) + Number(calcState.secondNum);
-      break;
-    case '-':
-      calcState.firstNum = calcState.result =
-        Number(calcState.firstNum) - Number(calcState.secondNum);
-      break;
-    case '÷':
-      calcState.firstNum = calcState.result =
-        Number(calcState.firstNum) / Number(calcState.secondNum);
-      break;
-    case '×':
-      calcState.firstNum = calcState.result =
-        Number(calcState.firstNum) * Number(calcState.secondNum);
-      break;
-    default:
-      return;
-  }
+// ---------- Clear ----------
+function loadClearListener() {
+  clearButton.addEventListener('click', () => {
+    calcState.firstNum = '0';
+    calcState.secondNum = '';
+    calcState.operator = null;
+    calcState.result = null;
+    calcState.whichNum = 'first';
+    display.textContent = '0';
+  });
 }
 
-// Enable clear button
-function loadClearListener() {
-  clearButton.addEventListener('click', (e) => {
-    calcState.firstNum = calcState.secondNum = display.textContent = 0;
-    calcState.operator = calcState.result = null;
+// ---------- Equals ----------
+function loadEqButton() {
+  eqButton.addEventListener('click', () => {
+    // If no operator, nothing to do
+    if (!calcState.operator) {
+      display.textContent = calcState.firstNum;
+      return;
+    }
+
+    // If operator exists but secondNum not entered, just keep firstNum
+    if (calcState.secondNum === '') {
+      calcState.result = calcState.firstNum;
+      display.textContent = calcState.result;
+      calcState.operator = null;
+      calcState.whichNum = 'first';
+      return;
+    }
+
+    calculate();
+    calcState.secondNum = '';
+    calcState.operator = null;
     calcState.whichNum = 'first';
   });
 }
 
-// Enable equals button
-function loadEqButton() {
-  eqButton.addEventListener('click', (e) => {
-    calculate();
-    calcState.secondNum = 0;
-    calcState.operator = null;
-    display.textContent = calcState.result;
-  });
-}
-
-// Enable back button
+// ---------- Backspace ----------
 function loadBackButton() {
-  backButton.addEventListener('click', (e) => {
+  backButton.addEventListener('click', () => {
+    // first
     if (calcState.whichNum === 'first') {
-      calcState.firstNum = calcState.firstNum.substr(
+      if (calcState.firstNum === '0') return;
+
+      calcState.firstNum = calcState.firstNum.substring(
         0,
         calcState.firstNum.length - 1
       );
-      calcState.firstNum
-        ? (display.textContent = calcState.firstNum)
-        : (display.textContent = 0);
+
+      if (calcState.firstNum === '') calcState.firstNum = '0';
+      display.textContent = calcState.firstNum;
+      return;
     }
-    if (calcState.whichNum === 'second') {
-      calcState.secondNum = calcState.secondNum.substr(
-        0,
-        calcState.secondNum.length - 1
-      );
-      calcState.secondNum
-        ? (display.textContent = calcState.secondNum)
-        : (display.textContent = 0);
+
+    // second
+    if (calcState.secondNum === '') {
+      display.textContent = '0';
+      return;
     }
+
+    calcState.secondNum = calcState.secondNum.substring(
+      0,
+      calcState.secondNum.length - 1
+    );
+
+    display.textContent =
+      calcState.secondNum === '' ? '0' : calcState.secondNum;
   });
 }
 
-// Enable decimal button
+// ---------- Decimal ----------
 function loadDecimalButton() {
-  decimalButton.addEventListener('click', (e) => {
+  decimalButton.addEventListener('click', () => {
+    // first
     if (calcState.whichNum === 'first') {
-      if (calcState.firstNum !== 0 && calcState.firstNum.endsWith('.')) return;
-      if (calcState.firstNum === 0) {
-        display.textContent = calcState.firstNum = '0.';
-      } else {
-        display.textContent = calcState.firstNum += '.';
-      }
+      if (calcState.firstNum.includes('.')) return;
+      calcState.firstNum =
+        calcState.firstNum === '0' ? '0.' : calcState.firstNum + '.';
+      display.textContent = calcState.firstNum;
+      return;
     }
-    if (calcState.whichNum === 'second') {
-      if (calcState.secondNum.endsWith('.')) return;
-      display.textContent = calcState.secondNum += '.';
-    }
+    // second
+    if (calcState.secondNum.includes('.')) return;
+    calcState.secondNum =
+      calcState.secondNum === '' ? '0.' : calcState.secondNum + '.';
+    display.textContent = calcState.secondNum;
   });
 }
 
-// Enable sign button
+// ---------- Sign toggle ----------
 function loadSignButton() {
-  signButton.addEventListener('click', (e) => {
-    calcState.whichNum === 'first'
-      ? (display.textContent = calcState.firstNum = -calcState.firstNum)
-      : (display.textContent = calcState.secondNum = -calcState.secondNum);
+  signButton.addEventListener('click', () => {
+    // first
+    if (calcState.whichNum === 'first') {
+      if (calcState.firstNum === '0') return;
+      calcState.firstNum = calcState.firstNum.startsWith('-')
+        ? calcState.firstNum.slice(1)
+        : '-' + calcState.firstNum;
+      display.textContent = calcState.firstNum;
+      return;
+    }
+
+    // second
+    if (calcState.secondNum === '') return;
+    calcState.secondNum = calcState.secondNum.startsWith('-')
+      ? calcState.secondNum.slice(1)
+      : '-' + calcState.secondNum;
+    display.textContent = calcState.secondNum;
   });
 }
 
+// Init calculator
 loadOpListener();
 loadNumListener();
 loadClearListener();
