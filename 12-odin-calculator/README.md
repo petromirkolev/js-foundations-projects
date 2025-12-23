@@ -23,6 +23,8 @@ Open the page in a browser:
 
 open index.html
 
+Or visit the <a href="https://petromirkolev.github.io/js-foundations-projects/12-odin-calculator/src/index.html"> Live Demo </a>
+
 ---
 
 ## QA Notes
