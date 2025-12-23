@@ -6,6 +6,9 @@ const actButton = document.querySelectorAll('[data-action]');
 const clearButton = document.querySelector('[data-action="clear"]');
 const eqButton = document.querySelector('[data-action="equals"]');
 const backButton = document.querySelector('[data-action="backspace"]');
+const percentButton = document.querySelector('[data-action="percent"]');
+const signButton = document.querySelector('[data-action="sign"]');
+const decimalButton = document.querySelector('[data-action="decimal"]');
 
 const calcState = {
   firstNum: 0,
@@ -20,18 +23,17 @@ opButton.forEach((button) => {
   button.addEventListener('click', (e) => {
     const operator = e.target.textContent;
     calcState.whichNum = 'second';
+    display.textContent = calcState.operator = operator;
     if (calcState.secondNum === 0) {
-      display.textContent = calcState.operator = operator;
+      // display.textContent = calcState.operator = operator;
     } else {
       calculate();
       calcState.secondNum = 0;
-      display.textContent = calcState.operator = operator;
+      // display.textContent = calcState.operator = operator;
       console.log(calcState);
     }
   });
 });
-
-// Actions
 
 // Numbers
 numButton.forEach((button) => {
@@ -90,11 +92,15 @@ clearButton.addEventListener('click', (e) => {
 eqButton.addEventListener('click', (e) => {
   calculate();
   calcState.secondNum = 0;
+  calcState.operator = null;
   display.textContent = calcState.result;
+  console.log(calcState);
 });
 
+// Back
 backButton.addEventListener('click', (e) => {
   if (calcState.whichNum === 'first') {
+    return calcState.firstNum.split('');
   }
   if (calcState.whichNum === 'second') {
   }
