@@ -72,7 +72,7 @@
               <th class="col-year">Year</th>
               <th class="col-pages">Pages</th>
               <th class="col-status">Status</th>
-              <th class="col-actions">Actions</th>
+              <th class="col-actions">Added on</th>
             </tr>
           </thead>
           <tbody data-view="rows">
@@ -113,6 +113,7 @@
               type="text"
               data-field="title"
               placeholder="e.g. Dune"
+              pattern="[a-zA-Z\s]+"
               required />
           </label>
 
@@ -122,6 +123,7 @@
               type="text"
               data-field="author"
               placeholder="e.g. Frank Herbert"
+              pattern="[a-zA-Z\s]+"
               required />
           </label>
 
@@ -129,10 +131,12 @@
             <label class="field">
               <span>Year</span>
               <input
-                type="number"
+                type="text"
                 data-field="year"
                 placeholder="e.g. 1965"
-                min="0" />
+                pattern="\d{1,4}"
+                minlength="0"
+                maxlength="4" />
             </label>
 
             <label class="field">
