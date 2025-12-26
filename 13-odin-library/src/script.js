@@ -71,6 +71,7 @@ function displayBooks(books) {
         let link = document.createElement('a');
         link.href = '#';
         link.textContent = element;
+        link.dataset.action = 'edit-book';
         link.dataset.id = book.id;
         tableData.appendChild(link);
       } else if (key === 'read') {
@@ -219,3 +220,18 @@ function init() {
 
 // Init library
 init();
+
+// Edit specific book
+let editBook = document
+  .querySelectorAll('[data-action="edit-book"]')
+  .forEach((book) => {
+    book.addEventListener('click', (e) => {
+      let selectedBook = e.target.dataset.id;
+      let foundBook = myLibrary.find((book) => book.id === selectedBook);
+      modal.classList.remove('hidden');
+      document.querySelector('[data-field="title"]').value = foundBook.title;
+      document.querySelector('[data-field="author"]').value = foundBook.author;
+      document.querySelector('[data-field="year"]').value = foundBook.year;
+      document.querySelector('[data-field="pages"]').value = foundBook.pages;
+    });
+  });
