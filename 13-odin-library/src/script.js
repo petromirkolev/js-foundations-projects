@@ -16,8 +16,8 @@ function Book(title, author, year, pages) {
   this.id = crypto.randomUUID();
   this.title = title;
   this.author = author;
-  this.year = year;
-  this.pages = pages;
+  this.year = Number(year);
+  this.pages = Number(pages);
   this.read = false;
   this.createdAt = new Date().toDateString();
 }
@@ -31,7 +31,11 @@ function addNewBook() {
     const year = document.querySelector('[data-field="year"]').value;
     const pages = document.querySelector('[data-field="pages"]').value;
     const newBook = new Book(title, author, year, pages);
-    myLibrary.push(newBook);
+
+    if (!myLibrary.some((book) => book.title === newBook.title)) {
+      myLibrary.push(newBook);
+    }
+
     displayBooks(myLibrary);
     loadBookStats();
     modal.classList.add('hidden');
@@ -216,7 +220,6 @@ function init() {
   filterBooks();
   sortBooks();
   manualSearch();
-  editExistingBook();
 }
 
 // Edit specific book
@@ -236,3 +239,4 @@ function editExistingBook() {
 
 // Init library
 init();
+editExistingBook();
