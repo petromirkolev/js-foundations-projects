@@ -26,13 +26,25 @@ function Book(title, author, year, pages) {
 function addNewBook() {
   submitBook.addEventListener('submit', (e) => {
     e.preventDefault();
+
+    const id = document.querySelector('[data-field="id"]').value;
     const author = document.querySelector('[data-field="author"]').value;
     const title = document.querySelector('[data-field="title"]').value;
     const year = document.querySelector('[data-field="year"]').value;
     const pages = document.querySelector('[data-field="pages"]').value;
-    const newBook = new Book(title, author, year, pages);
+    const isRead = document.querySelector('[data-field="read"]').checked;
 
-    if (!myLibrary.some((book) => book.title === newBook.title)) {
+    if (id) {
+      const book = myLibrary.find((b) => b.id === id);
+      if (book) {
+        book.title = title;
+        book.author = author;
+        book.year = Number(year);
+        book.pages = Number(pages);
+        book.read = !book.read;
+      }
+    } else {
+      const newBook = new Book(title, author, year, pages);
       myLibrary.push(newBook);
     }
 
@@ -44,15 +56,19 @@ function addNewBook() {
 
 // Add book modal listeners
 function modalListeners() {
-  // Open modal
+  const form = submitBook;
+
   document
     .querySelector('[data-action="open-add-modal"]')
-    .addEventListener('click', (e) => {
+    .addEventListener('click', () => {
+      const idField = document.querySelector('[data-field="id"]');
+      if (idField) idField.value = '';
+      form.reset();
       modal.classList.remove('hidden');
     });
-  // Close modal
+
   document.querySelectorAll('[data-action="close-modal"]').forEach((button) => {
-    button.addEventListener('click', (e) => {
+    button.addEventListener('click', () => {
       modal.classList.add('hidden');
     });
   });
@@ -99,15 +115,11 @@ function filterBooks() {
         displayBooks(myLibrary);
         break;
       case 'read':
-        const readBooks = myLibrary.filter((book) => {
-          if (book.read) return book;
-        });
+        const readBooks = myLibrary.filter((book) => book.read);
         displayBooks(readBooks);
         break;
       case 'unread':
-        const unreadBooks = myLibrary.filter((book) => {
-          if (!book.read) return book;
-        });
+        const unreadBooks = myLibrary.filter((book) => !book.read);
         displayBooks(unreadBooks);
         break;
       default:
@@ -220,23 +232,28 @@ function init() {
   filterBooks();
   sortBooks();
   manualSearch();
+  editExistingBook();
 }
 
 // Edit specific book
 function editExistingBook() {
-  document.querySelectorAll('[data-action="edit-book"]').forEach((book) => {
-    book.addEventListener('click', (e) => {
-      let selectedBook = e.target.dataset.id;
-      let foundBook = myLibrary.find((book) => book.id === selectedBook);
-      modal.classList.remove('hidden');
-      document.querySelector('[data-field="title"]').value = foundBook.title;
-      document.querySelector('[data-field="author"]').value = foundBook.author;
-      document.querySelector('[data-field="year"]').value = foundBook.year;
-      document.querySelector('[data-field="pages"]').value = foundBook.pages;
-    });
+  bookTable.addEventListener('click', (e) => {
+    const link = e.target.closest('[data-action="edit-book"]');
+    if (!link) return;
+
+    const selectedId = link.dataset.id;
+    const foundBook = myLibrary.find((book) => book.id === selectedId);
+    if (!foundBook) return;
+
+    modal.classList.remove('hidden');
+    document.querySelector('[data-field="id"]').value = foundBook.id;
+    document.querySelector('[data-field="title"]').value = foundBook.title;
+    document.querySelector('[data-field="author"]').value = foundBook.author;
+    document.querySelector('[data-field="year"]').value = foundBook.year;
+    document.querySelector('[data-field="pages"]').value = foundBook.pages;
+    document.querySelector('[data-field="read"]').checked = foundBook.read;
   });
 }
 
 // Init library
 init();
-editExistingBook();
