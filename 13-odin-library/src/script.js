@@ -216,15 +216,12 @@ function init() {
   filterBooks();
   sortBooks();
   manualSearch();
+  editExistingBook();
 }
 
-// Init library
-init();
-
 // Edit specific book
-let editBook = document
-  .querySelectorAll('[data-action="edit-book"]')
-  .forEach((book) => {
+function editExistingBook() {
+  document.querySelectorAll('[data-action="edit-book"]').forEach((book) => {
     book.addEventListener('click', (e) => {
       let selectedBook = e.target.dataset.id;
       let foundBook = myLibrary.find((book) => book.id === selectedBook);
@@ -235,3 +232,7 @@ let editBook = document
       document.querySelector('[data-field="pages"]').value = foundBook.pages;
     });
   });
+}
+
+// Init library
+init();
