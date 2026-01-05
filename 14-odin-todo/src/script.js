@@ -1,10 +1,33 @@
+/**
+ * Todo List App (vanilla JS)
+ *
+ * - State: tasks.items (array of task objects)
+ * - Features: add, search, sort, filter, toggle completed, delete, seed, clear all/completed
+ * - Rendering: buildTaskList(viewTasks) + loadTasksStatus() from full state
+ *
+ * This file is intentionally framework-free to practice DOM, state, and events.
+ */
+
+// App state
 const tasks = {
   items: [],
 };
-
 // Global variables
+const els = {
+  list: document.querySelector('[data-view="items"]'),
+  inputNew: document.querySelector('[data-input="new-todo"]'),
+  search: document.querySelector('[data-input="search"]'),
+  filterStatus: document.querySelector('[data-input="filter-status"]'),
+  sort: document.querySelector('[data-input="sort"]'),
+  total: document.querySelector('[data-view="count-total"]'),
+  active: document.querySelector('[data-view="count-active"]'),
+  completed: document.querySelector('[data-view="count-completed"]'),
+  clearAll: document.querySelector('[data-action="clear-all"]'),
+  clearCompleted: document.querySelector('[data-action="clear-completed"]'),
+  seed: document.querySelector('[data-action="seed"]'),
+  empty: document.querySelector('[data-view="empty"]'),
+};
 const taskList = document.querySelector('[data-view="items"]');
-
 // Task object constructor
 function Task(text) {
   this.id = crypto.randomUUID();
@@ -14,22 +37,20 @@ function Task(text) {
 }
 // Add new task
 function addTask() {
-  const input = document.querySelector('[data-input="new-todo"]');
-
-  if (input.value === '') return;
+  if (els.inputNew.value.trim() === '') return;
   if (
     !tasks.items.find(
-      (item) => item.text.toLowerCase() === input.value.toLowerCase()
+      (item) => item.text.toLowerCase() === els.inputNew.value.toLowerCase()
     )
   ) {
-    const newTask = new Task(input.value);
+    const newTask = new Task(els.inputNew.value);
     tasks.items.push(newTask);
   } else {
     alert('There is such item already!');
     return;
   }
   buildTaskList(tasks.items);
-  input.textContent = input.value = '';
+  els.inputNew.value = '';
 }
 // New task listeners
 function addTaskListeners() {
@@ -45,10 +66,19 @@ function addTaskListeners() {
     });
 }
 // Build To Do list
-function buildTaskList(tasks) {
+function buildTaskList(viewTasks) {
+  loadTasksStatus();
   taskList.innerHTML = '';
 
-  tasks.forEach((item) => {
+  const emptyView = document.querySelector('[data-view="empty"]');
+
+  if (!tasks.items.length) {
+    if (emptyView) emptyView.style.display = 'block';
+    return;
+  }
+  if (emptyView) emptyView.style.display = 'none';
+
+  viewTasks.forEach((item) => {
     // list item
     const li = document.createElement('li');
     li.className = 'todo-item';
@@ -106,8 +136,10 @@ function buildTaskList(tasks) {
 
     // add row
     taskList.appendChild(li);
-    loadTasksStatus();
   });
+  toggleTaskStatus();
+  editTask();
+  deleteTask();
 }
 // Search task list
 function searchTaskList() {
@@ -122,15 +154,18 @@ function searchTaskList() {
 // Sort helper
 function sortHelper(key) {
   return function (a, b) {
-    let valA, valB;
-    if (!isNaN(a) && !isNaN(b)) {
-      valA = a[key].toLowerCase();
-      valB = b[key].toLowerCase();
-    } else {
-      valA = a[key];
-      valB = b[key];
+    const valA = a[key];
+    const valB = b[key];
+
+    if (typeof valA === 'string' && typeof valB === 'string') {
+      const aStr = valA.toLowerCase();
+      const bStr = valB.toLowerCase();
+      if (aStr > bStr) return 1;
+      if (aStr < bStr) return -1;
+      return 0;
     }
 
+    // fallback: numeric / default
     if (valA > valB) return 1;
     if (valA < valB) return -1;
     return 0;
@@ -171,15 +206,15 @@ function filterByStatus() {
     .addEventListener('change', (e) => {
       switch (e.target.value) {
         case 'all':
-          displayBooks(myLibrary);
+          buildTaskList(tasks.items);
           break;
-        case 'read':
-          const readBooks = myLibrary.filter((book) => book.read);
-          displayBooks(readBooks);
+        case 'completed':
+          const completeTasks = tasks.items.filter((task) => task.completed);
+          buildTaskList(completeTasks);
           break;
-        case 'unread':
-          const unreadBooks = myLibrary.filter((book) => !book.read);
-          displayBooks(unreadBooks);
+        case 'active':
+          const uncompleteTasks = tasks.items.filter((task) => !task.completed);
+          buildTaskList(uncompleteTasks);
           break;
         default:
           return;
@@ -215,7 +250,6 @@ function clearAllTasks() {
     .addEventListener('click', (e) => {
       tasks.items = [];
       buildTaskList(tasks.items);
-      loadTasksStatus();
     });
 }
 // Load fake data (seed sample)
@@ -231,15 +265,89 @@ function seedSample() {
       buildTaskList(tasks.items);
     });
 }
+// Toggle task status
+function toggleTaskStatus() {
+  document
+    .querySelectorAll('[data-action="toggle-completed"]')
+    .forEach((toggle) => {
+      toggle.addEventListener('click', (e) => {
+        const itemEl = e.target.closest('.todo-item');
+        const textEl = itemEl.querySelector('.todo-text');
+        const taskId = itemEl.dataset.id;
+
+        const task = tasks.items.find((t) => t.id === taskId);
+        if (!task) return;
+
+        const nextCompleted = !task.completed;
+        task.completed = nextCompleted;
+
+        if (nextCompleted) {
+          itemEl.classList.add('completed');
+          textEl.classList.add('completed');
+        } else {
+          itemEl.classList.remove('completed');
+          textEl.classList.remove('completed');
+        }
+
+        loadTasksStatus();
+      });
+    });
+}
+// Delete task
+function deleteTask() {
+  document
+    .querySelectorAll('[data-action="delete-todo"]')
+    .forEach((deleteBtn) => {
+      deleteBtn.addEventListener('click', (e) => {
+        const task = e.target.closest('.todo-item');
+        const id = task.dataset.id;
+        const remainingTasks = tasks.items.filter((task) => task.id !== id);
+        tasks.items = remainingTasks;
+
+        buildTaskList(tasks.items);
+      });
+    });
+}
+// Clear completed
+function clearCompleteTasks() {
+  document
+    .querySelector('[data-action="clear-completed"]')
+    .addEventListener('click', (e) => {
+      const remainingTasks = tasks.items.filter(
+        (task) => task.completed === false
+      );
+      tasks.items = remainingTasks;
+      buildTaskList(tasks.items);
+    });
+}
+// Edit task
+function editTask() {
+  document.querySelectorAll('[data-action="edit-todo"]').forEach((editBtn) => {
+    editBtn.addEventListener('click', (e) => {
+      const itemEl = e.target.closest('.todo-item');
+      const id = itemEl.dataset.id;
+      const task = tasks.items.find((t) => t.id === id);
+      if (!task) return;
+
+      const nextText = prompt('Edit task', task.text);
+      if (!nextText || nextText.trim() === '') return;
+
+      task.text = nextText.trim();
+      buildTaskList(tasks.items);
+    });
+  });
+}
 
 // Init
 function init() {
+  buildTaskList();
   seedSample();
   addTaskListeners();
   searchTaskList();
   sortTasks();
-  buildTaskList(tasks.items);
   clearAllTasks();
+  clearCompleteTasks();
+  filterByStatus();
 }
-
+// Load initial app data
 init();
