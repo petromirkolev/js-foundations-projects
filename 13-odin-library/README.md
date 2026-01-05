@@ -21,6 +21,8 @@ Open the page in a browser:
 
 open index.html
 
+Or visit the <a href="https://petromirkolev.github.io/js-foundations-projects/13-odin-library/src/index.html"> Live Demo </a>
+
 ---
 
 ## Why This Project Exists
