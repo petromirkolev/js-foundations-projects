@@ -7,7 +7,6 @@ const totalBooks = document.querySelector('[data-view="count-total"]');
 const totalRead = document.querySelector('[data-view="count-read"]');
 const totalUnread = document.querySelector('[data-view="count-unread"]');
 const searchBox = document.querySelector('[data-input="search"]');
-const emptyList = document.querySelector('[data-view="empty"]');
 const modal = document.querySelector('[data-view="modal"]');
 const submitBook = document.querySelector('[data-form="book"]');
 
@@ -41,13 +40,13 @@ function addNewBook() {
         book.author = author;
         book.year = Number(year);
         book.pages = Number(pages);
-        book.read = !book.read;
+        book.read = isRead;
       }
     } else {
       const newBook = new Book(title, author, year, pages);
+      newBook.read = isRead;
       myLibrary.push(newBook);
     }
-
     displayBooks(myLibrary);
     loadBookStats();
     modal.classList.add('hidden');
@@ -99,10 +98,8 @@ function displayBooks(books) {
       } else {
         tableData.textContent = element;
       }
-
       tableRow.appendChild(tableData);
     }
-
     bookTable.appendChild(tableRow);
   });
 }
