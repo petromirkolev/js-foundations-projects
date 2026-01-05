@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Todo List (JS Logic Focus)</title>
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+
+  <body>
+    <main class="app">
+      <header class="header">
+        <div>
+          <h1>Todo List</h1>
+          <p class="subtitle">
+            Minimal UI — focus on state, filters, and edge cases
+          </p>
+        </div>
+
+        <div class="header-actions">
+          <button type="button" data-action="seed">Seed sample</button>
+          <button type="button" data-action="clear-all" class="danger">
+            Clear all
+          </button>
+        </div>
+      </header>
+
+      <!-- Add new todo -->
+      <section class="new-todo">
+        <label class="field field-row">
+          <input
+            type="text"
+            placeholder="What needs to be done?"
+            data-input="new-todo" />
+          <button type="button" data-action="add-todo">Add</button>
+        </label>
+        <p class="hint">
+          Press <kbd>Enter</kbd> in the input or click <b>Add</b> to create a
+          new task.
+        </p>
+      </section>
+
+      <!-- Controls: search + filters -->
+      <section class="controls">
+        <label class="field">
+          <span>Search</span>
+          <input
+            type="text"
+            placeholder="Filter by text..."
+            data-input="search" />
+        </label>
+
+        <label class="field">
+          <span>Status</span>
+          <select data-input="filter-status">
+            <option value="all">All</option>
+            <option value="active">Active</option>
+            <option value="completed">Completed</option>
+          </select>
+        </label>
+
+        <label class="field">
+          <span>Sort</span>
+          <select data-input="sort">
+            <option value="createdDesc">Newest first</option>
+            <option value="createdAsc">Oldest first</option>
+            <option value="textAsc">Text A→Z</option>
+            <option value="textDesc">Text Z→A</option>
+          </select>
+        </label>
+      </section>
+
+      <!-- Summary -->
+      <section class="summary" aria-live="polite">
+        <div class="pill" data-view="count-total">Total: 0</div>
+        <div class="pill" data-view="count-active">Active: 0</div>
+        <div class="pill" data-view="count-completed">Completed: 0</div>
+      </section>
+
+      <!-- Todo list -->
+      <section class="list-wrap">
+        <ul class="todo-list" data-view="items">
+          <!-- rendered by JS -->
+        </ul>
+
+        <div class="empty" data-view="empty">
+          No tasks yet. Add your first todo above.
+        </div>
+      </section>
+
+      <!-- Footer actions -->
+      <footer class="footer">
+        <button type="button" data-action="clear-completed" class="ghost">
+          Clear completed
+        </button>
+      </footer>
+    </main>
+
+    <script src="./app.js" defer></script>
+  </body>
+</html>

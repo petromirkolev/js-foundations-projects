@@ -1,0 +1,375 @@
+:root {
+  --bg-body: #0f172a;
+  --bg-app: #020617;
+  --bg-card: #020617;
+  --bg-elevated: #020617;
+  --border-subtle: #1f2937;
+  --accent: #22c55e;
+  --accent-soft: rgba(34, 197, 94, 0.12);
+  --accent-strong: #16a34a;
+  --text-main: #e5e7eb;
+  --text-muted: #9ca3af;
+  --text-soft: #6b7280;
+  --danger: #ef4444;
+  --danger-soft: rgba(248, 113, 113, 0.12);
+  --shadow-soft: 0 20px 35px rgba(15, 23, 42, 0.8);
+}
+
+/* Global reset-ish */
+* {
+  box-sizing: border-box;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: radial-gradient(circle at top left, #1f2937, #020617);
+  color: var(--text-main);
+}
+
+/* App container */
+.app {
+  max-width: 720px;
+  margin: 48px auto;
+  padding: 0 16px 40px;
+}
+
+/* Header */
+.header {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 18px;
+}
+
+h1 {
+  margin: 0;
+  font-size: 30px;
+  letter-spacing: 0.04em;
+}
+
+.subtitle {
+  margin: 6px 0 0;
+  color: var(--text-soft);
+  font-size: 14px;
+}
+
+.header-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+/* Buttons */
+button {
+  border: 1px solid transparent;
+  background: #111827;
+  color: var(--text-main);
+  padding: 8px 12px;
+  border-radius: 999px;
+  cursor: pointer;
+  font-size: 13px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: background 0.18s ease, border-color 0.18s ease,
+    transform 0.08s ease, box-shadow 0.18s ease, opacity 0.18s ease;
+}
+
+button:hover {
+  background: #020617;
+  box-shadow: 0 10px 22px rgba(15, 23, 42, 0.7);
+  transform: translateY(-1px);
+}
+
+button:active {
+  transform: translateY(0);
+  box-shadow: none;
+}
+
+button.danger {
+  background: var(--danger-soft);
+  border-color: var(--danger);
+  color: #fecaca;
+}
+
+button.danger:hover {
+  background: var(--danger);
+  color: #fee2e2;
+}
+
+button.ghost {
+  background: transparent;
+  border-color: #4b5563;
+  color: var(--text-muted);
+}
+
+button.ghost:hover {
+  background: rgba(55, 65, 81, 0.35);
+  color: var(--text-main);
+}
+
+/* New todo card */
+.new-todo {
+  background: var(--bg-card);
+  border-radius: 18px;
+  border: 1px solid var(--border-subtle);
+  padding: 14px 14px 10px;
+  margin-bottom: 12px;
+  box-shadow: var(--shadow-soft);
+}
+
+/* Fields / inputs */
+.field {
+  display: grid;
+  gap: 6px;
+  font-size: 14px;
+}
+
+.field span {
+  color: var(--text-soft);
+}
+
+.field-row {
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: 10px;
+}
+
+input,
+select {
+  border: 1px solid #4b5563;
+  border-radius: 999px;
+  padding: 9px 13px;
+  font-size: 14px;
+  background: #020617;
+  color: var(--text-main);
+  outline: none;
+  transition: border-color 0.16s ease, box-shadow 0.16s ease,
+    background 0.16s ease;
+}
+
+input::placeholder {
+  color: #6b7280;
+}
+
+input:focus,
+select:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 1px rgba(34, 197, 94, 0.4);
+  background: #020617;
+}
+
+/* Controls card */
+.controls {
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr 0.8fr;
+  gap: 12px;
+  background: var(--bg-card);
+  border-radius: 18px;
+  border: 1px solid var(--border-subtle);
+  padding: 12px 14px 14px;
+  margin-bottom: 12px;
+  box-shadow: var(--shadow-soft);
+}
+
+/* Summary pills */
+.summary {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin: 12px 0;
+}
+
+.pill {
+  background: #020617;
+  border-radius: 999px;
+  border: 1px solid #374151;
+  padding: 7px 11px;
+  font-size: 12px;
+  color: var(--text-muted);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.pill::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: #4b5563;
+}
+
+[data-view='count-total']::before {
+  background: #60a5fa;
+}
+[data-view='count-active']::before {
+  background: #fbbf24;
+}
+[data-view='count-completed']::before {
+  background: #22c55e;
+}
+
+/* List wrapper */
+.list-wrap {
+  background: var(--bg-card);
+  border-radius: 18px;
+  border: 1px solid var(--border-subtle);
+  padding: 4px 0 2px;
+  min-height: 80px;
+  box-shadow: var(--shadow-soft);
+}
+
+/* Todo list + items */
+.todo-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.todo-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 10px 14px;
+  border-bottom: 1px solid rgba(31, 41, 55, 0.8);
+}
+
+.todo-item:last-child {
+  border-bottom: none;
+}
+
+.todo-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+/* You’ll likely render a checkbox or button here via JS */
+.todo-checkbox {
+  width: 18px;
+  height: 18px;
+  border-radius: 999px;
+  border: 1px solid #4b5563;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  cursor: pointer;
+  transition: background 0.16s ease, border-color 0.16s ease,
+    box-shadow 0.16s ease, transform 0.06s ease;
+}
+
+.todo-checkbox-inner {
+  width: 10px;
+  height: 10px;
+  border-radius: 999px;
+  background: transparent;
+}
+
+.todo-item.completed .todo-checkbox {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+  box-shadow: 0 0 0 1px rgba(34, 197, 94, 0.35);
+}
+
+.todo-item.completed .todo-checkbox-inner {
+  background: var(--accent);
+}
+
+/* Text + meta */
+.todo-text {
+  font-size: 14px;
+  color: var(--text-main);
+}
+
+.todo-text.completed {
+  text-decoration: line-through;
+  color: var(--text-muted);
+}
+
+.todo-meta {
+  font-size: 11px;
+  color: var(--text-soft);
+}
+
+/* Actions in each row */
+.todo-actions {
+  display: flex;
+  flex-shrink: 0;
+  gap: 6px;
+}
+
+.todo-actions button {
+  padding: 4px 9px;
+  font-size: 11px;
+  border-radius: 999px;
+  background: #020617;
+  border-color: #374151;
+}
+
+.todo-actions button:hover {
+  background: #111827;
+}
+
+/* Empty state */
+.empty {
+  padding: 18px 14px 18px;
+  text-align: center;
+  color: var(--text-soft);
+  font-size: 14px;
+  display: none;
+}
+
+/* Footer */
+.footer {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 12px;
+}
+
+/* Hint text */
+.hint {
+  margin: 6px 0 0;
+  color: var(--text-soft);
+  font-size: 12px;
+}
+
+kbd {
+  font-family: inherit;
+  background: #111827;
+  color: #e5e7eb;
+  border-radius: 4px;
+  padding: 1px 4px;
+  font-size: 11px;
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+  .controls {
+    grid-template-columns: 1fr;
+  }
+
+  .header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .header-actions {
+    width: 100%;
+    justify-content: flex-start;
+  }
+
+  .footer {
+    justify-content: flex-start;
+  }
+
+  .todo-item {
+    align-items: center;
+  }
+}
