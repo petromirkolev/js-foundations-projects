@@ -235,7 +235,7 @@ function init() {
 // Edit specific book
 function editExistingBook() {
   bookTable.addEventListener('click', (e) => {
-    const link = e.target.closest('[data-action="edit-book"]');
+    const link = e.target.closest('');
     if (!link) return;
 
     const selectedId = link.dataset.id;

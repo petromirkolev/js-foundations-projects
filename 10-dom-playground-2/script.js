@@ -1,35 +1,24 @@
-// Drill 1
-function delay(ms) {
-  return new Promise((resolve) => {
-    setTimeout(resolve, ms);
-  });
-}
-await delay(500);
-console.log('done');
-
-// Drill 2
-async function fetchJson(url) {
-  let response = await fetch(url);
-  if (!response.ok) throw Error('Error while fetching.');
-  return response.json();
+function uniqueItem(item) {
+  return items.find((item) => item.name === item);
 }
 
-// Drill 3
-async function fetchAll(urls) {
-  const promises = urls.map((url) => fetchJson(url));
-  return Promise.all(promises);
-  // **OR** return Promise.all(urls.map(fetchJson));
+function groupBy(id) {
+  return items.filter((item) => (item.id = id));
 }
 
-// Drill 4
-async function fetchWithRetry(url, retries) {
-  for (let attempt = 0; attempt <= retries; attempt++) {
-    try {
-      return await fetchJson(url);
-    } catch (error) {
-      if (attempt === retries) {
-        throw error;
-      }
-    }
+function removeByPredicate(item, predicate) {
+  return items.filter((item) => predicate);
+}
+
+function flattenItems(items) {
+  return items.reduce((item1, item2) => {
+    item1 + item2;
+  }, 0);
+}
+
+function chunk(items, size) {
+  let chunked = [];
+  for (let i = 0; i < items.lenght; i += chunk) {
+    chunked.push(items.slice(i, size));
   }
 }
