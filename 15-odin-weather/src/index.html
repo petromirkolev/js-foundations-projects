@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Weather App</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+  <body>
+    <div class="app">
+      <header class="app-header">
+        <h1 class="app-title">Weather App</h1>
+        <p class="app-subtitle">
+          Search for a city to see current weather and a short forecast.
+        </p>
+      </header>
+
+      <main class="app-main">
+        <!-- Search / controls -->
+        <section class="panel panel-search">
+          <form
+            class="search-form"
+            data-form="search-location"
+            autocomplete="off">
+            <label class="field-label" for="location-input"> Location </label>
+            <div class="field-row">
+              <input
+                id="location-input"
+                class="input"
+                type="text"
+                name="location"
+                placeholder="e.g. Plovdiv, Sofia, London"
+                data-input="location" />
+              <button type="submit" class="btn primary" data-action="search">
+                Search
+              </button>
+            </div>
+
+            <div class="toggle-row">
+              <span class="toggle-label">Units:</span>
+              <button
+                type="button"
+                class="btn toggle"
+                data-action="set-units"
+                data-units="metric">
+                °C
+              </button>
+              <button
+                type="button"
+                class="btn toggle"
+                data-action="set-units"
+                data-units="imperial">
+                °F
+              </button>
+            </div>
+          </form>
+
+          <div class="status-bar" data-view="status"></div>
+        </section>
+
+        <!-- Current weather -->
+        <section class="panel panel-current">
+          <h2 class="panel-title">Current Weather</h2>
+
+          <div class="current-body" data-view="current">
+            <div class="current-main">
+              <div class="current-location" data-view="current-location">
+                <!-- City, country -->
+              </div>
+              <div class="current-temp-row">
+                <span class="current-temp" data-view="current-temp">
+                  <!-- 21°C -->
+                </span>
+                <span class="current-feels" data-view="current-feels">
+                  <!-- feels like 19°C -->
+                </span>
+              </div>
+              <div class="current-desc" data-view="current-description">
+                <!-- Clear sky -->
+              </div>
+              <div class="current-updated" data-view="current-updated">
+                <!-- Updated: 12:34 -->
+              </div>
+            </div>
+
+            <div class="current-extra">
+              <div class="current-extra-item">
+                <span class="label">Humidity</span>
+                <span class="value" data-view="current-humidity">
+                  <!-- 60% -->
+                </span>
+              </div>
+              <div class="current-extra-item">
+                <span class="label">Wind</span>
+                <span class="value" data-view="current-wind">
+                  <!-- 3.4 m/s -->
+                </span>
+              </div>
+              <div class="current-extra-item">
+                <span class="label">Pressure</span>
+                <span class="value" data-view="current-pressure">
+                  <!-- 1013 hPa -->
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <div class="placeholder" data-view="current-empty">
+            Search for a location to see its weather.
+          </div>
+        </section>
+
+        <!-- Forecast -->
+        <section class="panel panel-forecast">
+          <h2 class="panel-title">Forecast</h2>
+          <div class="placeholder" data-view="forecast-empty">
+            No forecast yet. Search for a city first.
+          </div>
+
+          <ul class="forecast-list" data-view="forecast">
+            <!-- Rendered by JS: -->
+            <!-- <li class="forecast-item">
+              <div class="forecast-date">Mon</div>
+              <div class="forecast-temp">18° / 24°</div>
+              <div class="forecast-desc">Partly cloudy</div>
+            </li> -->
+          </ul>
+        </section>
+      </main>
+
+      <div class="loading-overlay hidden" data-view="loading">
+        <div class="spinner"></div>
+      </div>
+    </div>
+
+    <script type="module" src="./app.js"></script>
+  </body>
+</html>
