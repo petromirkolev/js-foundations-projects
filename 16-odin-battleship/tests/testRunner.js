@@ -22,6 +22,18 @@ function expect(actual) {
         throw new Error(`Expected ${e}, got ${a}`);
       }
     },
+    toThrow() {
+      if (typeof actual !== 'function') {
+        throw new Error('toThrow expects a function');
+      }
+      let threw = false;
+      try {
+        actual();
+      } catch (e) {
+        threw = true;
+      }
+      if (!threw) throw new Error(`Expected function to throw, but it did not`);
+    },
   };
 }
 
