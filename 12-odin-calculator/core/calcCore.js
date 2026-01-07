@@ -18,7 +18,7 @@ function appendDigit(currentStr, digit) {
     throw new Error('appendDigit: digit must be 0-9');
   }
 
-  if (currentStr === '0') return digit;
+  if (/^0*$/.test(currentStr)) return digit;
   return currentStr + digit;
 }
 
