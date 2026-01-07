@@ -1,34 +1,41 @@
-import { calcState, calc } from '../app.js';
-
-// ---------- Calculator core ----------
-function calculate() {
-  if (!calcState.operator) return;
-  if (calcState.secondNum === '') return;
-  const a = Number(calcState.firstNum);
-  const b = Number(calcState.secondNum);
-
-  let value;
-  switch (calcState.operator) {
+function calculate(a, b, operator) {
+  switch (operator) {
     case '+':
-      value = a + b;
-      break;
+      return a + b;
     case '-':
-      value = a - b;
-      break;
+      return a - b;
     case '×':
-      value = a * b;
-      break;
+      return a * b;
     case '÷':
-      value = a / b;
-      break;
+      return a / b;
     default:
-      return;
+      throw new Error('Unsupported operator: ' + operator);
   }
-
-  // Keep state as strings
-  calcState.result = String(value);
-  calcState.firstNum = calcState.result;
-  calc.display.textContent = calcState.result;
 }
 
-export { calculate };
+function appendDigit(currentStr, digit) {
+  if (!/^[0-9]$/.test(digit)) {
+    throw new Error('appendDigit: digit must be 0-9');
+  }
+
+  if (currentStr === '0') return digit;
+  return currentStr + digit;
+}
+
+function applyBackspace(valueStr) {
+  if (valueStr.length <= 1) return '0';
+  return valueStr.slice(0, -1);
+}
+
+function addDecimal(valueStr) {
+  if (valueStr.includes('.')) return valueStr;
+  return valueStr + '.';
+}
+
+function toggleSign(valueStr) {
+  if (valueStr === '0') return '0';
+  if (valueStr.startsWith('-')) return valueStr.slice(1);
+  return '-' + valueStr;
+}
+
+export { calculate, appendDigit, applyBackspace, addDecimal, toggleSign };

@@ -1,6 +1,12 @@
-import { calculate } from './core/calcCore.js';
+import {
+  calculate,
+  appendDigit,
+  applyBackspace,
+  addDecimal,
+  toggleSign,
+} from './core/calcCore.js';
 
-// Global variables
+// Global DOM refs
 const calc = {
   display: document.querySelector('#display-value'),
   numButton: document.querySelectorAll('[data-digit]'),
@@ -21,163 +27,144 @@ const calcState = {
   whichNum: 'first',
 };
 
-// Bind events
-function bindEvents() {
-  // Operator button listener
-  calc.opButton.forEach((button) => {
-    button.addEventListener('click', (e) => {
-      storeOperator(e);
-    });
-  });
-  // Numbers button listener
-  calc.numButton.forEach((button) => {
-    button.addEventListener('click', (e) => {
-      storeNumbers(e);
-    });
-  });
-  // Clear calculator button listener
-  calc.clearButton.addEventListener('click', clearCalculator);
-  // Equals button listener
-  calc.eqButton.addEventListener('click', getResult);
-  // Backspace button listener
-  calc.backButton.addEventListener('click', clearLastNum);
-  // Decimal button listener
-  calc.decimalButton.addEventListener('click', addDecimal);
-  // Positive/negative sign button listener
-  calc.signButton.addEventListener('click', addSign);
+function render(value) {
+  calc.display.textContent = value;
 }
 
-// Helpers
-function storeOperator(e) {
-  const operator = e.target.textContent;
-
-  if (calcState.operator && calcState.secondNum !== '') {
-    calculate();
-    calcState.secondNum = '';
-  }
-
-  // Set new operator and move to second number entry
-  calcState.operator = operator;
-  calcState.whichNum = 'second';
-
-  // Optional: show operator or keep current number
-  calc.display.textContent = operator;
-}
-
-function storeNumbers(e) {
+// Event handlers
+function handleNumberClick(e) {
   const digit = e.target.dataset.digit;
   if (isNaN(Number(digit))) return;
 
   if (calcState.whichNum === 'first') {
-    calcState.firstNum =
-      calcState.firstNum === '0' ? digit : calcState.firstNum + digit;
-    calc.display.textContent = calcState.firstNum;
+    calcState.firstNum = appendDigit(calcState.firstNum, digit);
+    render(calcState.firstNum);
   } else {
-    calcState.secondNum =
-      calcState.secondNum === '' ? digit : calcState.secondNum + digit;
-    calc.display.textContent = calcState.secondNum;
+    const current = calcState.secondNum === '' ? '0' : calcState.secondNum;
+    calcState.secondNum = appendDigit(current, digit);
+    render(calcState.secondNum);
   }
 }
 
-function clearCalculator() {
+function handleOperatorClick(e) {
+  const operator = e.target.textContent;
+
+  // if we already have a second number, chain calculation
+  if (calcState.operator && calcState.secondNum !== '') {
+    const a = Number(calcState.firstNum);
+    const b = Number(calcState.secondNum);
+    const value = calculate(a, b, calcState.operator);
+
+    calcState.result = String(value);
+    calcState.firstNum = calcState.result;
+    calcState.secondNum = '';
+    render(calcState.result);
+  }
+
+  calcState.operator = operator;
+  calcState.whichNum = 'second';
+}
+
+function handleClear() {
   calcState.firstNum = '0';
   calcState.secondNum = '';
   calcState.operator = null;
   calcState.result = null;
   calcState.whichNum = 'first';
-  calc.display.textContent = '0';
+  render('0');
 }
 
-function getResult() {
+function handleEquals() {
   if (!calcState.operator) {
-    calc.display.textContent = calcState.firstNum;
+    render(calcState.firstNum);
     return;
   }
 
   if (calcState.secondNum === '') {
     calcState.result = calcState.firstNum;
-    calc.display.textContent = calcState.result;
+    render(calcState.result);
     calcState.operator = null;
     calcState.whichNum = 'first';
     return;
   }
 
-  calculate();
+  const a = Number(calcState.firstNum);
+  const b = Number(calcState.secondNum);
+  const value = calculate(a, b, calcState.operator);
+
+  calcState.result = String(value);
+  calcState.firstNum = calcState.result;
   calcState.secondNum = '';
   calcState.operator = null;
   calcState.whichNum = 'first';
+
+  render(calcState.result);
 }
 
-function clearLastNum() {
-  // first
+function handleBackspace() {
   if (calcState.whichNum === 'first') {
-    if (calcState.firstNum === '0') return;
-
-    calcState.firstNum = calcState.firstNum.substring(
-      0,
-      calcState.firstNum.length - 1
-    );
-
-    if (calcState.firstNum === '') calcState.firstNum = '0';
-    calc.display.textContent = calcState.firstNum;
+    calcState.firstNum = applyBackspace(calcState.firstNum);
+    render(calcState.firstNum);
     return;
   }
 
-  // second
   if (calcState.secondNum === '') {
-    calc.display.textContent = '0';
+    render('0');
     return;
   }
 
-  calcState.secondNum = calcState.secondNum.substring(
-    0,
-    calcState.secondNum.length - 1
-  );
-
-  calc.display.textContent =
-    calcState.secondNum === '' ? '0' : calcState.secondNum;
+  calcState.secondNum = applyBackspace(calcState.secondNum);
+  render(calcState.secondNum);
 }
 
-function addDecimal() {
-  // first
+function handleDecimal() {
   if (calcState.whichNum === 'first') {
-    if (calcState.firstNum.includes('.')) return;
-    calcState.firstNum =
-      calcState.firstNum === '0' ? '0.' : calcState.firstNum + '.';
-    calc.display.textContent = calcState.firstNum;
+    calcState.firstNum = addDecimal(calcState.firstNum);
+    render(calcState.firstNum);
     return;
   }
-  // second
-  if (calcState.secondNum.includes('.')) return;
-  calcState.secondNum =
-    calcState.secondNum === '' ? '0.' : calcState.secondNum + '.';
-  calc.display.textContent = calcState.secondNum;
+
+  const current = calcState.secondNum === '' ? '0' : calcState.secondNum;
+  calcState.secondNum = addDecimal(current);
+  render(calcState.secondNum);
 }
 
-function addSign() {
-  // first
+function handleSign() {
   if (calcState.whichNum === 'first') {
-    if (calcState.firstNum === '0') return;
-    calcState.firstNum = calcState.firstNum.startsWith('-')
-      ? calcState.firstNum.slice(1)
-      : '-' + calcState.firstNum;
-    calc.display.textContent = calcState.firstNum;
+    calcState.firstNum = toggleSign(calcState.firstNum);
+    render(calcState.firstNum);
     return;
   }
 
-  // second
   if (calcState.secondNum === '') return;
-  calcState.secondNum = calcState.secondNum.startsWith('-')
-    ? calcState.secondNum.slice(1)
-    : '-' + calcState.secondNum;
-  calc.display.textContent = calcState.secondNum;
+
+  calcState.secondNum = toggleSign(calcState.secondNum);
+  render(calcState.secondNum);
+}
+
+// Bind events
+function bindEvents() {
+  calc.opButton.forEach((button) => {
+    button.addEventListener('click', handleOperatorClick);
+  });
+
+  calc.numButton.forEach((button) => {
+    button.addEventListener('click', handleNumberClick);
+  });
+
+  calc.clearButton.addEventListener('click', handleClear);
+  calc.eqButton.addEventListener('click', handleEquals);
+  calc.backButton.addEventListener('click', handleBackspace);
+  calc.decimalButton.addEventListener('click', handleDecimal);
+  calc.signButton.addEventListener('click', handleSign);
 }
 
 // Init
 function init() {
+  render(calcState.firstNum);
   bindEvents();
 }
 
 init();
 
-export { calcState, calc };
+export { calcState };
