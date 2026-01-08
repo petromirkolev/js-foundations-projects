@@ -28,16 +28,40 @@ function placeShip(grid, ship, coords, orientation) {
   }
 
   // Guard against placing one ship over another ship
+  let hasShip = false;
+
+  for (let i = 0; i < ship.length; i++) {
+    const targetX = orientation === 'horizontal' ? x : x + i;
+    const targetY = orientation === 'horizontal' ? y + i : y;
+
+    const overlapping = grid.some(
+      (cell) =>
+        cell.x === targetX && cell.y === targetY && cell.state === 'ship'
+    );
+
+    if (overlapping) {
+      hasShip = true;
+      break;
+    }
+  }
+  if (hasShip) throw new Error('A ship is placed in this cell already!');
 
   // Add ship to gameboard cells
   for (let i = 0; i < ship.length; i++) {
-    orientation === 'horizontal'
-      ? grid.find((cell) => {
-          if (cell.x === x && cell.y === y + i) cell.state = 'ship';
-        })
-      : grid.find((cell) => {
-          if (cell.x === x + i && cell.y === y) cell.state = 'ship';
-        });
+    if (orientation === 'horizontal') {
+      const cell = getCell(grid, x, y + i);
+      cell.state = 'ship';
+    } else {
+      const cell = getCell(grid, x + i, y);
+      cell.state = 'ship';
+    }
+  }
+}
+
+// Find in grid helper
+function getCell(grid, x, y) {
+  for (const cell of grid) {
+    if (cell.x === x && cell.y === y) return cell;
   }
 }
 
@@ -48,4 +72,4 @@ function receiveAttack(coords) {
   // remove event listener from coords
 }
 
-export { createGrid, placeShip };
+export { createGrid, placeShip, receiveAttack };
