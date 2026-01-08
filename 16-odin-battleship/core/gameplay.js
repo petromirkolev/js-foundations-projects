@@ -13,6 +13,13 @@ function createGrid(x, y) {
   return grid;
 }
 
+// Find in grid helper
+function findCell(grid, x, y) {
+  for (const cell of grid) {
+    if (cell.x === x && cell.y === y) return cell;
+  }
+}
+
 // Place ship on gameboard
 function placeShip(grid, ship, coords, orientation) {
   const { x, y } = { ...coords };
@@ -49,27 +56,26 @@ function placeShip(grid, ship, coords, orientation) {
   // Add ship to gameboard cells
   for (let i = 0; i < ship.length; i++) {
     if (orientation === 'horizontal') {
-      const cell = getCell(grid, x, y + i);
+      const cell = findCell(grid, x, y + i);
       cell.state = 'ship';
     } else {
-      const cell = getCell(grid, x + i, y);
+      const cell = findCell(grid, x + i, y);
       cell.state = 'ship';
     }
   }
 }
 
-// Find in grid helper
-function getCell(grid, x, y) {
-  for (const cell of grid) {
-    if (cell.x === x && cell.y === y) return cell;
-  }
-}
-
 // Receive attack
-function receiveAttack(coords) {
+function receiveAttack(grid, coords) {
+  const { x, y } = { ...coords };
+
+  grid
+    .filter((cell) => cell.x === x && cell.y === y)
+    .map((cell) => (cell.state = 'miss'));
+
   // if coords are empty, register a miss
   // if coords are used by ship, register attack, add hits to ship, check if its sunk
-  // remove event listener from coords
+  // remove event listener from coords - to be done from another listener function?
 }
 
 export { createGrid, placeShip, receiveAttack };
