@@ -1,0 +1,3 @@
+function placeShip() {}
+
+export { placeShip };
