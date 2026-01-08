@@ -1,32 +1,15 @@
-import { Ship } from '../core/ship.js';
+import { createGrid } from './gameplay.js';
 
-const x = 10;
-const y = 10;
-
-// Create grid
-function createBoard(x, y) {
-  const grid = [];
-  for (let i = 0; i < x; i++) {
-    for (let j = 0; j < y; j++) {
-      grid.push({ x: i, y: j, state: 'empty', ship: null });
-    }
-  }
-  return grid;
+// Create board
+function createBoard() {
+  const grid = createGrid(10, 10);
+  const board = document.querySelector('[data-view="player-grid"]');
+  grid.forEach((cell) => {
+    const celly = document.createElement('div');
+    celly.classList.add('board-cell');
+    celly.dataset.x = cell.x;
+    celly.dataset.y = cell.y;
+    board.appendChild(celly);
+  });
 }
-
-// Place ship
-function placeShip(ship, start) {
-  // if start is not empty or start + ship length is outside the row/col, throw error
-  // else place ship and change board cells flag that they are occupied by ship X
-}
-
-// Receive attack
-function receiveAttack(coords) {
-  // if coords are empty, register a miss
-  // if coords are used by ship, register attack, add hits to ship, check if its sunk
-  // remove event listener from coords
-}
-
-createBoard(x, y);
-
-export { createBoard };
+createBoard();

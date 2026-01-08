@@ -1,4 +1,4 @@
-// import { test, expect } from './testRunner.js';
+import { test, expect } from './testRunner.js';
 import { Ship } from '../core/ship.js';
 const ship = new Ship(3);
 

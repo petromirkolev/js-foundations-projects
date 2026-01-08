@@ -1,4 +1,4 @@
-// import { test, expect } from './testRunner.js';
+import { test, expect } from './testRunner.js';
 import { createBoard } from '../core/gameboard.js';
 
 const x = 10;
