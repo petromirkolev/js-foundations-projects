@@ -82,14 +82,54 @@ test('Place non-overlapping horizontal and vertical ships', () => {
 });
 
 // === ATTACK ===
+
 // Attack on an empty cell changes cell state to "miss".
 test('Attack on an empty cell is "miss"', () => {
   const grid = createGrid(10, 10);
   const ship = new Ship(3);
   placeShip(grid, ship, { x: 0, y: 0 }, 'horizontal');
-  receiveAttack(grid, { x: 3, y: 3 });
+  receiveAttack(grid, ship, { x: 3, y: 3 });
   const cell = grid.filter((cell) => cell.state === 'miss');
   expect(cell[0].state).toBe('miss');
 });
 
 // Attack on a non-empty cell changes cell state to "hit" and ship hits increment.
+test('Attack on a ship cell is "hit"', () => {
+  const grid = createGrid(10, 10);
+  const ship = new Ship(3);
+  placeShip(grid, ship, { x: 0, y: 0 }, 'horizontal');
+  receiveAttack(grid, ship, { x: 0, y: 2 });
+  const cell = grid.filter((cell) => cell.state === 'hit');
+  expect(cell[0].state).toBe('hit');
+  expect(ship.timesHit).toBe(1);
+});
+
+// Attack on an already attacked cell throws an error.
+test('Attack on an attacked cell throws an error', () => {
+  const grid = createGrid(10, 10);
+  const ship = new Ship(3);
+  placeShip(grid, ship, { x: 0, y: 0 }, 'horizontal');
+  receiveAttack(grid, ship, { x: 0, y: 1 });
+  const attack = () => receiveAttack(grid, ship, { x: 0, y: 1 });
+  expect(attack).toThrow();
+});
+
+// Attack outside the board throws an error and leaves the board unchanged.
+test('Attack out of bounds throws an error', () => {
+  const grid = createGrid(10, 10);
+  const ship = new Ship(3);
+  placeShip(grid, ship, { x: 0, y: 0 }, 'horizontal');
+  const attack = () => receiveAttack(grid, ship, { x: 99, y: 99 });
+  expect(attack).toThrow();
+});
+
+// Attack on all ship cells sunks the ship.
+test('Ship is sunk after all cells are being hit', () => {
+  const grid = createGrid(10, 10);
+  const ship = new Ship(2);
+  placeShip(grid, ship, { x: 0, y: 0 }, 'horizontal');
+  receiveAttack(grid, ship, { x: 0, y: 0 });
+  receiveAttack(grid, ship, { x: 0, y: 1 });
+  expect(ship.isSunk()).toBe(true);
+  expect(ship.timesHit).toBe(2);
+});

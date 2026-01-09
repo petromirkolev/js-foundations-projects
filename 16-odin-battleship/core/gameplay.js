@@ -1,6 +1,3 @@
-// y is horizontal
-// x is vertical
-
 // Create grid
 function createGrid(x, y) {
   const grid = [];
@@ -13,10 +10,17 @@ function createGrid(x, y) {
   return grid;
 }
 
-// Find in grid helper
+// Find cell in grid helper
 function findCell(grid, x, y) {
   for (const cell of grid) {
     if (cell.x === x && cell.y === y) return cell;
+  }
+}
+
+// Find ship helper
+function findShip(id) {
+  for (const cell of grid) {
+    if (cell.ship === id) return cell;
   }
 }
 
@@ -66,16 +70,22 @@ function placeShip(grid, ship, coords, orientation) {
 }
 
 // Receive attack
-function receiveAttack(grid, coords) {
+function receiveAttack(grid, ship, coords) {
   const { x, y } = { ...coords };
+  const cell = findCell(grid, x, y);
 
-  grid
-    .filter((cell) => cell.x === x && cell.y === y)
-    .map((cell) => (cell.state = 'miss'));
+  if (!cell || cell.state === 'hit' || cell.state === 'miss')
+    throw new Error('Invalid cell!');
 
   // if coords are empty, register a miss
+  if (cell.state === 'empty') cell.state = 'miss';
+
   // if coords are used by ship, register attack, add hits to ship, check if its sunk
-  // remove event listener from coords - to be done from another listener function?
+  if (cell.state === 'ship') {
+    cell.state = 'hit';
+    ship.timesHit++;
+    ship.isSunk();
+  }
 }
 
 export { createGrid, placeShip, receiveAttack };
