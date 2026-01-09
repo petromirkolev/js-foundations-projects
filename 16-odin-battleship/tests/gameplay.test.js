@@ -1,14 +1,14 @@
 import { test, expect } from '../tests/testRunner.js';
-import { placeShip, createGrid, receiveAttack } from '../core/gameplay.js';
-import { Ship } from '../core/ship.js';
+import { Gameboard } from '../core/gameboard.js';
 
 // === PLACE SHIP ON BOARD ===
 // Placing a length-3 ship horizontally.
 test('Place a length-3 ship at coords 0,0 horizontally', () => {
-  const grid = createGrid(10, 10);
-  const ship = new Ship(3);
-  placeShip(grid, ship, { x: 0, y: 0 }, 'horizontal');
-  const shipCoords = grid
+  const gameboard = new Gameboard();
+  gameboard.createGrid(10, 10);
+  const ship = gameboard.addShip(3);
+  gameboard.placeShip(ship, { x: 0, y: 0 }, 'horizontal');
+  const shipCoords = gameboard.grid
     .filter((cell) => cell.state === 'ship')
     .map((cell) => {
       return { x: cell.x, y: cell.y };
@@ -23,10 +23,11 @@ test('Place a length-3 ship at coords 0,0 horizontally', () => {
 
 // Placing a length-3 ship vertically.
 test('Place a length-3 ship at coords 0,0 vertically', () => {
-  const grid = createGrid(10, 10);
-  const ship = new Ship(3);
-  placeShip(grid, ship, { x: 0, y: 0 }, 'vertical');
-  const shipCoords = grid
+  const gameboard = new Gameboard();
+  gameboard.createGrid(10, 10);
+  const ship = gameboard.addShip(3);
+  gameboard.placeShip(ship, { x: 0, y: 0 }, 'vertical');
+  const shipCoords = gameboard.grid
     .filter((cell) => cell.state === 'ship')
     .map((cell) => {
       return { x: cell.x, y: cell.y };
@@ -41,95 +42,110 @@ test('Place a length-3 ship at coords 0,0 vertically', () => {
 
 // Placing a ship horizontally partially outside the board at the right edge throws an error.
 test('Place horizontal length-3 ship out of bounds', () => {
-  const grid = createGrid(10, 10);
-  const ship = new Ship(3);
-  expect(() => placeShip(grid, ship, { x: 0, y: 8 }, 'horizontal')).toThrow();
+  const gameboard = new Gameboard();
+  gameboard.grid = gameboard.createGrid(10, 10);
+  const ship = gameboard.addShip(3);
+  expect(() =>
+    gameboard.placeShip(grid, ship, { x: 0, y: 8 }, 'horizontal')
+  ).toThrow();
 });
 
 // Placing a ship vertically partially outside the board at the right edge throws an error.
 test('Place vertical length-3 ship out of bounds', () => {
-  const grid = createGrid(10, 10);
-  const ship = new Ship(3);
-  expect(() => placeShip(grid, ship, { x: 8, y: 0 }, 'vertical')).toThrow();
+  const gameboard = new Gameboard();
+  gameboard.grid = gameboard.createGrid(10, 10);
+  const ship = gameboard.addShip(3);
+  expect(() =>
+    gameboard.placeShip(grid, ship, { x: 8, y: 0 }, 'vertical')
+  ).toThrow();
 });
 
 // When placement fails (throws), the board remains unchanged.
 test('When ship placement fails, the game board remains unchanged', () => {
-  const grid = createGrid(10, 10);
-  const ship = new Ship(3);
-  const action = () => placeShip(grid, ship, { x: 8, y: 0 }, 'vertical');
+  const gameboard = new Gameboard();
+  gameboard.createGrid(10, 10);
+  const ship = gameboard.addShip(3);
+  const action = () => gameboard.placeShip(ship, { x: 8, y: 0 }, 'vertical');
   expect(action).toThrow();
-  expect(grid.filter((cell) => cell.state === 'ship').length).toBe(0);
+  expect(gameboard.grid.filter((cell) => cell.state === 'ship').length).toBe(0);
 });
 
 // Placing a ship overlapping another ship throws an error.
 test('Place horizontal length-3 ship overlapping another ship', () => {
-  const grid = createGrid(10, 10);
-  const ship = new Ship(3);
-  placeShip(grid, ship, { x: 0, y: 0 }, 'horizontal');
-  expect(() => placeShip(grid, ship, { x: 0, y: 0 }, 'horizontal')).toThrow();
+  const gameboard = new Gameboard();
+  gameboard.createGrid(10, 10);
+  const ship = gameboard.addShip(3);
+  gameboard.placeShip(ship, { x: 0, y: 0 }, 'horizontal');
+  expect(() =>
+    gameboard.placeShip(ship, { x: 0, y: 0 }, 'horizontal')
+  ).toThrow();
 });
 
 // Placing non-overlapping horizontal and vertical ships mutate grid properly.
 test('Place non-overlapping horizontal and vertical ships', () => {
-  const grid = createGrid(10, 10);
-  const ship = new Ship(3);
-  const ship2 = new Ship(3);
-  placeShip(grid, ship, { x: 0, y: 0 }, 'horizontal');
-  placeShip(grid, ship, { x: 0, y: 3 }, 'vertical');
-  const shipCells = grid.filter((cell) => cell.state === 'ship');
+  const gameboard = new Gameboard();
+  gameboard.createGrid(10, 10);
+  const ship = gameboard.addShip(3);
+  const ship2 = gameboard.addShip(3);
+  gameboard.placeShip(ship, { x: 0, y: 0 }, 'horizontal');
+  gameboard.placeShip(ship, { x: 0, y: 3 }, 'vertical');
+  const shipCells = gameboard.grid.filter((cell) => cell.state === 'ship');
   expect(shipCells.length).toBe(6);
 });
 
 // === ATTACK ===
-
 // Attack on an empty cell changes cell state to "miss".
 test('Attack on an empty cell is "miss"', () => {
-  const grid = createGrid(10, 10);
-  const ship = new Ship(3);
-  placeShip(grid, ship, { x: 0, y: 0 }, 'horizontal');
-  receiveAttack(grid, ship, { x: 3, y: 3 });
-  const cell = grid.filter((cell) => cell.state === 'miss');
+  const gameboard = new Gameboard();
+  gameboard.createGrid(10, 10);
+  const ship = gameboard.addShip(3);
+  gameboard.placeShip(ship, { x: 0, y: 0 }, 'horizontal');
+  gameboard.receiveAttack({ x: 3, y: 3 });
+  const cell = gameboard.grid.filter((cell) => cell.state === 'miss');
   expect(cell[0].state).toBe('miss');
 });
 
 // Attack on a non-empty cell changes cell state to "hit" and ship hits increment.
 test('Attack on a ship cell is "hit"', () => {
-  const grid = createGrid(10, 10);
-  const ship = new Ship(3);
-  placeShip(grid, ship, { x: 0, y: 0 }, 'horizontal');
-  receiveAttack(grid, ship, { x: 0, y: 2 });
-  const cell = grid.filter((cell) => cell.state === 'hit');
+  const gameboard = new Gameboard();
+  gameboard.createGrid(10, 10);
+  const ship = gameboard.addShip(3);
+  gameboard.placeShip(ship, { x: 0, y: 0 }, 'horizontal');
+  gameboard.receiveAttack({ x: 0, y: 2 });
+  const cell = gameboard.grid.filter((cell) => cell.state === 'hit');
   expect(cell[0].state).toBe('hit');
   expect(ship.timesHit).toBe(1);
 });
 
 // Attack on an already attacked cell throws an error.
 test('Attack on an attacked cell throws an error', () => {
-  const grid = createGrid(10, 10);
-  const ship = new Ship(3);
-  placeShip(grid, ship, { x: 0, y: 0 }, 'horizontal');
-  receiveAttack(grid, ship, { x: 0, y: 1 });
-  const attack = () => receiveAttack(grid, ship, { x: 0, y: 1 });
+  const gameboard = new Gameboard();
+  gameboard.createGrid(10, 10);
+  const ship = gameboard.addShip(3);
+  gameboard.placeShip(ship, { x: 0, y: 0 }, 'horizontal');
+  gameboard.receiveAttack({ x: 0, y: 1 });
+  const attack = () => gameboard.receiveAttack(ship, { x: 0, y: 1 });
   expect(attack).toThrow();
 });
 
 // Attack outside the board throws an error and leaves the board unchanged.
 test('Attack out of bounds throws an error', () => {
-  const grid = createGrid(10, 10);
-  const ship = new Ship(3);
-  placeShip(grid, ship, { x: 0, y: 0 }, 'horizontal');
-  const attack = () => receiveAttack(grid, ship, { x: 99, y: 99 });
+  const gameboard = new Gameboard();
+  gameboard.createGrid(10, 10);
+  const ship = gameboard.addShip(3);
+  gameboard.placeShip(ship, { x: 0, y: 0 }, 'horizontal');
+  const attack = () => gameboard.receiveAttack(ship, { x: 99, y: 99 });
   expect(attack).toThrow();
 });
 
 // Attack on all ship cells sunks the ship.
 test('Ship is sunk after all cells are being hit', () => {
-  const grid = createGrid(10, 10);
-  const ship = new Ship(2);
-  placeShip(grid, ship, { x: 0, y: 0 }, 'horizontal');
-  receiveAttack(grid, ship, { x: 0, y: 0 });
-  receiveAttack(grid, ship, { x: 0, y: 1 });
+  const gameboard = new Gameboard();
+  gameboard.createGrid(10, 10);
+  const ship = gameboard.addShip(2);
+  gameboard.placeShip(ship, { x: 0, y: 0 }, 'horizontal');
+  gameboard.receiveAttack({ x: 0, y: 0 });
+  gameboard.receiveAttack({ x: 0, y: 1 });
   expect(ship.isSunk()).toBe(true);
   expect(ship.timesHit).toBe(2);
 });
