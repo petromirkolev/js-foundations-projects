@@ -1,3 +1,9 @@
+// Player constructor
 class Player {
-  constructor(parameters) {}
+  constructor(name, board) {
+    this.name = name;
+    this.board = board;
+  }
 }
+
+export { Player };
