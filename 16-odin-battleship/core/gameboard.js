@@ -1,4 +1,3 @@
-import { findCell, findShip } from '../core/gameplay.js';
 import { Ship } from './ship.js';
 
 class Gameboard {
@@ -55,11 +54,11 @@ class Gameboard {
     // Add ship to gameboard cells
     for (let i = 0; i < ship.length; i++) {
       if (orientation === 'horizontal') {
-        const cell = findCell(this.grid, x, y + i);
+        const cell = this.findCell(x, y + i);
         cell.state = 'ship';
         cell.ship = ship.id;
       } else {
-        const cell = findCell(this.grid, x + i, y);
+        const cell = this.findCell(x + i, y);
         cell.state = 'ship';
         cell.ship = ship.id;
       }
@@ -67,7 +66,7 @@ class Gameboard {
   }
   receiveAttack(coords) {
     const { x, y } = { ...coords };
-    const cell = findCell(this.grid, x, y);
+    const cell = this.findCell(x, y);
 
     if (!cell || cell.state === 'hit' || cell.state === 'miss')
       throw new Error('Invalid cell!');
@@ -77,12 +76,25 @@ class Gameboard {
 
     // if coords are used by ship, register attack, add hits to ship, check if its sunk
     if (cell.state === 'ship') {
-      const ship = findShip(this.ships, cell.ship);
+      const ship = this.findShip(cell.ship);
       if (!ship) throw new Error('Ship not found for this cell');
       cell.state = 'hit';
       ship.timesHit++;
       ship.isSunk();
     }
+    return cell.state;
+  }
+  findCell(x, y) {
+    for (const cell of this.grid) {
+      if (!cell) throw new Error('Cell not found');
+      if (cell.x === x && cell.y === y) return cell;
+    }
+  }
+  findShip(id) {
+    return this.ships.find((ship) => ship.id === id);
+  }
+  checkAllSunk() {
+    return this.ships.every((ship) => ship.isSunk());
   }
 }
 

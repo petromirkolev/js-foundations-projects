@@ -149,3 +149,18 @@ test('Ship is sunk after all cells are being hit', () => {
   expect(ship.isSunk()).toBe(true);
   expect(ship.timesHit).toBe(2);
 });
+
+// Check if all ships are sunk
+test('All ships are sunk after attacks', () => {
+  const gameboard = new Gameboard();
+  gameboard.createGrid(10, 10);
+  const shipOne = gameboard.addShip(2);
+  const shipTwo = gameboard.addShip(2);
+  gameboard.placeShip(shipOne, { x: 0, y: 0 }, 'horizontal');
+  gameboard.placeShip(shipTwo, { x: 1, y: 0 }, 'horizontal');
+  gameboard.receiveAttack({ x: 0, y: 0 });
+  gameboard.receiveAttack({ x: 0, y: 1 });
+  gameboard.receiveAttack({ x: 1, y: 0 });
+  gameboard.receiveAttack({ x: 1, y: 1 });
+  expect(gameboard.checkAllSunk()).toBe(true);
+});
