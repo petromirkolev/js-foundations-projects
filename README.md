@@ -26,27 +26,24 @@ This repository serves as a foundation for:
 
 ## Projects
 
-### JS Foundations
-
-- 01-dom-playground
-- 02-array-utils
-- 03-objects-and-state
-- 04-async-basics
-- 05-api-mini-project
-- 06-api-poller
-- 07-telemetry-simulator
-- 08-task-runner
-- 09-api-dashboard
-- 10-dom-playground-2
-
-### Practice projects (logic-first, minimal UI)
-
-- 11-odin-rock-paper-scissors
-- 12-odin-calculator
-- 13-odin-library
-- 14-odin-todo
-- 15-odin-weather
-- 16-odin-battleship
+| #   | Folder                      | Description                                   |
+| --- | --------------------------- | --------------------------------------------- |
+| 01  | 01-dom-playground           | Basic DOM manipulation & event handling       |
+| 02  | 02-array-utils              | Array helpers and pure data utilities         |
+| 03  | 03-objects-and-state        | Stateful objects, immutable state patterns    |
+| 04  | 04-async-basics             | Promises, async/await, basic async flows      |
+| 05  | 05-api-mini-project         | Simple API calls & DOM rendering              |
+| 06  | 06-api-poller               | Polling pattern for APIs                      |
+| 07  | 07-telemetry-simulator      | Simulated telemetry data and visualization    |
+| 08  | 08-task-runner              | Task queue / runner logic                     |
+| 09  | 09-api-dashboard            | Small API dashboard UI                        |
+| 10  | 10-dom-playground-2         | DOM practice v2 (events, rendering, patterns) |
+| 11  | 11-odin-rock-paper-scissors | Odin Project – console RPS game               |
+| 12  | 12-odin-calculator          | Odin Project – calculator with JS & DOM       |
+| 13  | 13-odin-library             | Odin Project – library app (state + DOM)      |
+| 14  | 14-odin-todo                | Odin Project – todo app (filters, state)      |
+| 15  | 15-odin-weather             | Odin Project – weather app with APIs          |
+| 16  | 16-odin-battleship          | Odin Project – battleship with tests & AI     |
 
 ---
 
@@ -56,11 +53,7 @@ Browser-based projects:
 
 - open index.html
 
-Node-based projects:
-
-- node index.js
-
-(Node.js required for some projects.)
+Or open the project's live demo from the corresponding README.md file.
 
 ---
 
