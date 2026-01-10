@@ -1,3 +1,4 @@
+// Jest like browser console test runner
 function test(name, fn) {
   try {
     fn();
