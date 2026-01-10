@@ -9,31 +9,27 @@ const els = {
   resetButton: document.querySelector('[data-action="reset-game"]'),
   turnMessage: document.querySelector('[data-view="turn-indicator"]'),
   logMessage: document.querySelector('[data-view="log"]'),
+  randomize: document.querySelector('[data-action="randomize-fleet"]'),
   gridSize: { x: 10, y: 10 },
   gameOver: false,
-  playerState: {
+  player: {
     profile: undefined,
   },
-  aiState: {
+  ai: {
     profile: undefined,
     remainingShots: [],
-    ships: [],
   },
 };
-
-// Note to self - fix playerState and aiState objects
 
 // Create player and board
 function createPlayer() {
   const playerBoard = new Gameboard();
   const player = new Player(playerBoard);
   playerBoard.createGrid(els.gridSize.x, els.gridSize.y);
-  const shipOne = playerBoard.addShip(2);
-  const shipTwo = playerBoard.addShip(3);
-  const shipThree = playerBoard.addShip(5);
-  playerBoard.placeShip(shipOne, { x: 0, y: 0 }, 'horizontal');
-  playerBoard.placeShip(shipTwo, { x: 2, y: 0 }, 'horizontal');
-  playerBoard.placeShip(shipThree, { x: 4, y: 0 }, 'horizontal');
+  playerBoard.addShip(2);
+  playerBoard.addShip(3);
+  playerBoard.addShip(5);
+  playerBoard.ships.forEach((ship) => placeRandom(playerBoard, ship));
   return player;
 }
 
@@ -42,19 +38,13 @@ function createComputer() {
   const aiBoard = new Gameboard();
   const ai = new Player(aiBoard);
   aiBoard.createGrid(els.gridSize.x, els.gridSize.y);
-  els.aiState.remainingShots = aiBoard.grid.map((cell) => {
+  els.ai.remainingShots = aiBoard.grid.map((cell) => {
     return { x: cell.x, y: cell.y };
   });
-
-  const shipOne = aiBoard.addShip(2);
-  const shipTwo = aiBoard.addShip(3);
-  const shipThree = aiBoard.addShip(5);
-  els.aiState.ships.push(shipOne, shipTwo, shipThree);
-
-  aiBoard.placeShip(shipOne, { x: 0, y: 0 }, 'horizontal');
-  aiBoard.placeShip(shipTwo, { x: 2, y: 0 }, 'horizontal');
-  aiBoard.placeShip(shipThree, { x: 4, y: 0 }, 'horizontal');
-  placeRandom(aiBoard);
+  aiBoard.addShip(2);
+  aiBoard.addShip(3);
+  aiBoard.addShip(5);
+  aiBoard.ships.forEach((ship) => placeRandom(aiBoard, ship));
 
   return ai;
 }
@@ -86,7 +76,7 @@ function handlePlayerTurn(e) {
   const x = Number(e.target.dataset.x);
   const y = Number(e.target.dataset.y);
 
-  const result = els.aiState.profile.board.receiveAttack({ x, y });
+  const result = els.ai.profile.board.receiveAttack({ x, y });
 
   if (result === 'hit') e.target.classList.add('hit');
   if (result === 'miss') e.target.classList.add('miss');
@@ -95,7 +85,7 @@ function handlePlayerTurn(e) {
 
   e.target.removeEventListener('click', handlePlayerTurn);
 
-  if (els.aiState.profile.board.checkAllSunk()) {
+  if (els.ai.profile.board.checkAllSunk()) {
     endGame('Player');
     return;
   }
@@ -111,11 +101,11 @@ function handlePlayerTurn(e) {
 function handleComputerTurn() {
   if (els.gameOver) return;
   // prevent duplicate hits
-  const index = Math.floor(Math.random() * els.aiState.remainingShots.length);
-  const { x, y } = els.aiState.remainingShots[index];
-  els.aiState.remainingShots.splice(index, 1);
+  const index = Math.floor(Math.random() * els.ai.remainingShots.length);
+  const { x, y } = els.ai.remainingShots[index];
+  els.ai.remainingShots.splice(index, 1);
 
-  const result = els.playerState.profile.board.receiveAttack({ x, y });
+  const result = els.player.profile.board.receiveAttack({ x, y });
 
   for (const element of els.playerGridEl.children) {
     if (Number(element.dataset.x) === x && Number(element.dataset.y) === y) {
@@ -125,7 +115,7 @@ function handleComputerTurn() {
       break;
     }
   }
-  if (els.playerState.profile.board.checkAllSunk()) {
+  if (els.player.profile.board.checkAllSunk()) {
     endGame('AI');
     return;
   }
@@ -139,6 +129,7 @@ function bindEvents() {
   els.aiGridEl.querySelectorAll('.board-cell').forEach((cell) => {
     cell.addEventListener('click', handlePlayerTurn);
   });
+  els.randomize.addEventListener('click', randomizeFleet);
 }
 
 // Mark end of game
@@ -154,10 +145,10 @@ function endGame(winner) {
 function startGame() {
   els.startButton.removeEventListener('click', startGame);
   els.gameOver = false;
-  els.playerState.profile = createPlayer();
-  els.aiState.profile = createComputer();
-  drawBoard(els.playerState.profile, els.playerGridEl, { showShips: true });
-  drawBoard(els.aiState.profile, els.aiGridEl, { showShips: true });
+  els.player.profile = createPlayer();
+  els.ai.profile = createComputer();
+  drawBoard(els.player.profile, els.playerGridEl, { showShips: true });
+  drawBoard(els.ai.profile, els.aiGridEl, { showShips: false });
   bindEvents();
   showTurnMessage("Start the game by aiming at enemy's board!");
   showTurnLog('');
@@ -178,16 +169,44 @@ function showTurnLog(message) {
 }
 
 // Random ship placement
-function placeRandom(aiBoard) {
-  // aiBoard.placeShip(shipOne, { x: 0, y: 0 }, 'horizontal');
-  // aiBoard.placeShip(shipTwo, { x: 2, y: 0 }, 'horizontal');
-  // aiBoard.placeShip(shipThree, { x: 4, y: 0 }, 'horizontal');
-  console.log(aiBoard);
+function placeRandom(board, ship) {
+  let tries = 0;
+  let shipPlaced = false;
+  const gridSide = Math.sqrt(board.grid.length);
+  const orientation = ['horizontal', 'vertical'];
 
-  const index = Math.floor(Math.random() * aiBoard.grid.length);
-  // find cell and return coords
+  while (tries < 100 && !shipPlaced) {
+    try {
+      const x = Math.floor(Math.random() * gridSide);
+      const y = Math.floor(Math.random() * gridSide);
+      const index = Math.floor(Math.random() * 2);
+      board.placeShip(ship, { x, y }, orientation[index]);
+      shipPlaced = true;
+    } catch (error) {
+      continue;
+    } finally {
+      tries++;
+    }
+  }
+}
 
-  // console.log(coords);
+// Randomize player's fleet
+function randomizeFleet() {
+  const board = els.player.profile.board;
+
+  board.grid.forEach((cell) => {
+    cell.state = 'empty';
+    cell.ship = null;
+  });
+
+  board.ships.forEach((ship) => {
+    ship.timesHit = 0;
+  });
+
+  els.player.profile.board.ships.forEach((ship) => {
+    placeRandom(els.player.profile.board, ship);
+  });
+  drawBoard(els.player.profile, els.playerGridEl, { showShips: true });
 }
 
 // Init

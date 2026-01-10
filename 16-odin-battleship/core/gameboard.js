@@ -71,10 +71,8 @@ class Gameboard {
     if (!cell || cell.state === 'hit' || cell.state === 'miss')
       throw new Error('Invalid cell!');
 
-    // if coords are empty, register a miss
     if (cell.state === 'empty') cell.state = 'miss';
 
-    // if coords are used by ship, register attack, add hits to ship, check if its sunk
     if (cell.state === 'ship') {
       const ship = this.findShip(cell.ship);
       if (!ship) throw new Error('Ship not found for this cell');
@@ -86,9 +84,9 @@ class Gameboard {
   }
   findCell(x, y) {
     for (const cell of this.grid) {
-      if (!cell) throw new Error('Cell not found');
       if (cell.x === x && cell.y === y) return cell;
     }
+    return undefined;
   }
   findShip(id) {
     return this.ships.find((ship) => ship.id === id);
