@@ -1,5 +1,5 @@
-import { Player } from './player.js';
-import { Gameboard } from './gameboard.js';
+import { Player } from './core/player.js';
+import { Gameboard } from './core/gameboard.js';
 
 // Global elements
 const els = {
