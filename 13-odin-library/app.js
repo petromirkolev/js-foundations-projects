@@ -1,3 +1,9 @@
+/*
+ * Library App (vanilla JS)
+ * - State: state.books (array of book objects)
+ * - Features: add / edit, filter, sort, search, stats
+ */
+
 import {
   createBook,
   getBookStats,
@@ -5,13 +11,6 @@ import {
   searchBooks,
   sortBooks,
 } from './core/libraryCore.js';
-
-/**
- * Library App (vanilla JS)
- *
- * - State: state.books (array of book objects)
- * - Features: add / edit, filter, sort, search, stats
- */
 
 // State
 const state = {
@@ -35,7 +34,7 @@ const els = {
   clearAll: document.querySelector('[data-action="clear-all"]'),
 };
 
-// Rendering
+// Render book stats
 function renderStats() {
   const { total, read, unread } = getBookStats(state.books);
   els.totalBooks.textContent = `Total: ${total}`;
@@ -43,13 +42,13 @@ function renderStats() {
   els.totalUnread.textContent = `Unread: ${unread}`;
 }
 
+// Render books in view
 function renderBooks(viewBooks) {
   els.bookTable.textContent = '';
 
   viewBooks.forEach((book) => {
-    const row = document.createElement('tr');
-
     const keys = ['title', 'author', 'year', 'pages', 'read', 'createdAt'];
+    const row = document.createElement('tr');
 
     keys.forEach((key) => {
       const td = document.createElement('td');
@@ -67,22 +66,14 @@ function renderBooks(viewBooks) {
       } else {
         td.textContent = value;
       }
-
       row.appendChild(td);
     });
-
     els.bookTable.appendChild(row);
   });
 }
 
-// Render everything from full state
-function renderMainView() {
-  renderStats();
-  renderBooks(state.books);
-}
-
-// Modal + form
-function openModalForNewBook() {
+// New book modal
+function newBookModal() {
   const form = els.submitBook;
   if (!form) return;
 
@@ -93,7 +84,8 @@ function openModalForNewBook() {
   els.modal.classList.remove('hidden');
 }
 
-function openModalForEdit(book) {
+// Edit book modal
+function editBookModal(book) {
   const form = els.submitBook;
   if (!form) return;
 
@@ -107,10 +99,7 @@ function openModalForEdit(book) {
   form.querySelector('[data-field="read"]').checked = book.read;
 }
 
-function closeModal() {
-  els.modal.classList.add('hidden');
-}
-
+// Submit book form
 function handleFormSubmit(e) {
   e.preventDefault();
 
@@ -139,12 +128,13 @@ function handleFormSubmit(e) {
     state.books.push(newBook);
   }
 
-  renderMainView();
+  renderBooks(state.books);
+  renderStats();
   closeModal();
 }
 
-// Table / filter / sort / search events
-function handleTableClick(e) {
+// Edit a book
+function editBook(e) {
   const link = e.target.closest('[data-action="edit-book"]');
   if (!link) return;
 
@@ -152,28 +142,32 @@ function handleTableClick(e) {
   const foundBook = state.books.find((book) => book.id === selectedId);
   if (!foundBook) return;
 
-  openModalForEdit(foundBook);
+  editBookModal(foundBook);
 }
 
-function handleFilterChange(e) {
+// Filter by status (read/unread)
+function sortByStatus(e) {
   const status = e.target.value;
-  const filtered = filterBooksByStatus(state.books, status);
-  renderBooks(filtered);
+  const sorted = filterBooksByStatus(state.books, status);
+  renderBooks(sorted);
 }
 
-function handleSortChange(e) {
+// Sort by criteria
+function sortByCriteria(e) {
   const sortKey = e.target.value;
   const sorted = sortBooks(state.books, sortKey);
   renderBooks(sorted);
 }
 
-function handleSearchInput() {
+// Search book
+function searchBook() {
   const query = els.searchBox.value;
   const found = searchBooks(state.books, query);
   renderBooks(found);
 }
 
-function handleClearAllBooks() {
+// Clear all books
+function clearAllBooks() {
   state.books = [];
   renderBooks(state.books);
 }
@@ -233,26 +227,28 @@ function seedSample() {
 // Bind events + init
 function bindEvents() {
   // table click -> edit
-  els.bookTable.addEventListener('click', handleTableClick);
+  els.bookTable.addEventListener('click', editBook);
   // seed sample
   els.seedSample.addEventListener('click', seedSample);
   // clear all books
-  els.clearAll.addEventListener('click', handleClearAllBooks);
+  els.clearAll.addEventListener('click', clearAllBooks);
   // form submit
   els.submitBook.addEventListener('submit', handleFormSubmit);
   // filter / sort / search
-  els.filterStatus.addEventListener('change', handleFilterChange);
-  els.sortStatus.addEventListener('change', handleSortChange);
-  els.searchBox.addEventListener('input', handleSearchInput);
+  els.filterStatus.addEventListener('change', sortByStatus);
+  els.sortStatus.addEventListener('change', sortByCriteria);
+  els.searchBox.addEventListener('input', searchBook);
   // modal open/close
-  els.openModalBtn.addEventListener('click', openModalForNewBook);
+  els.openModalBtn.addEventListener('click', newBookModal);
   els.closeModalBtns.forEach((btn) =>
-    btn.addEventListener('click', closeModal)
+    btn.addEventListener('click', () => els.modal.classList.add('hidden'))
   );
 }
 
+// Init
 function init() {
-  renderMainView();
+  renderBooks(state.books);
+  renderStats();
   bindEvents();
 }
 

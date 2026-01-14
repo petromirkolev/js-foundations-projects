@@ -51,13 +51,13 @@ function searchBooks(books, query) {
   });
 }
 
-// Sort helper factory
-function makeSortHelper(key) {
+// Sort helper
+function sortHelper(key) {
   return (a, b) => {
-    const va = String(a[key]).toLowerCase();
-    const vb = String(b[key]).toLowerCase();
-    if (va > vb) return 1;
-    if (va < vb) return -1;
+    const valA = String(a[key]).toLowerCase();
+    const valB = String(b[key]).toLowerCase();
+    if (valA > valB) return 1;
+    if (valA < valB) return -1;
     return 0;
   };
 }
@@ -68,17 +68,17 @@ function sortBooks(books, sortKey) {
 
   switch (sortKey) {
     case 'authorAsc':
-      return copy.toSorted(makeSortHelper('author'));
+      return copy.toSorted(sortHelper('author'));
     case 'authorDesc':
-      return copy.toSorted(makeSortHelper('author')).reverse();
+      return copy.toSorted(sortHelper('author')).reverse();
     case 'titleAsc':
-      return copy.toSorted(makeSortHelper('title'));
+      return copy.toSorted(sortHelper('title'));
     case 'titleDesc':
-      return copy.toSorted(makeSortHelper('title')).reverse();
+      return copy.toSorted(sortHelper('title')).reverse();
     case 'createdAsc':
-      return copy.toSorted(makeSortHelper('createdAt'));
+      return copy.toSorted(sortHelper('createdAt'));
     case 'createdDesc':
-      return copy.toSorted(makeSortHelper('createdAt')).reverse();
+      return copy.toSorted(sortHelper('createdAt')).reverse();
     default:
       return copy;
   }
