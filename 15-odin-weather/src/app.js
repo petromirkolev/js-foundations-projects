@@ -1,13 +1,12 @@
-/**
- * Weather App (vanilla JS)
- *
- * - State: location + current + daily + units
- * - Flow: user types city -> geocode -> weather -> render
- * - Pattern: state -> render -> events/controllers
+/*
+  Weather App (vanilla JS)
+ 
+  - State: location + current + daily + units
+  - Flow: user types city -> geocode -> weather -> render
+  - Pattern: state -> render -> events/controllers
  */
 
-/* =========================== 1. STATE + DOM REFERENCES =========================== */
-
+// State and DOM references
 const state = {
   lat: 0,
   lon: 0,
@@ -38,8 +37,7 @@ const els = {
   forecastPlaceholder: document.querySelector('[data-view="forecast-empty"]'),
 };
 
-/* =============== 2. HELPERS =============== */
-
+// Helpers
 function cToF(celsius) {
   return (celsius * 9) / 5 + 32;
 }
@@ -57,8 +55,7 @@ function showStatus(message) {
   els.status.textContent = message || '';
 }
 
-/* ================== 3. RENDER FUNCTIONS ================== */
-
+// Renderers
 function renderCurrentWeather() {
   if (!state.city || !state.currentWeather) {
     if (els.currentPlaceholder) {
@@ -142,8 +139,7 @@ function renderForecast() {
   });
 }
 
-/* ================= 4. CONTROLLERS ================= */
-
+// Controllers
 async function getWeather() {
   const weatherApiUrl = `https://api.open-meteo.com/v1/forecast?latitude=${state.lat}&longitude=${state.lon}&current=temperature_2m,relative_humidity_2m,apparent_temperature,wind_speed_10m,surface_pressure,cloud_cover&daily=temperature_2m_max,temperature_2m_min&forecast_days=6&timezone=auto`;
 
@@ -202,8 +198,7 @@ function switchUnits(nextUnits) {
   renderCurrentWeather();
 }
 
-/* ================= 5. EVENT WIRING ================= */
-
+// Event wiring
 function bindEvents() {
   // City search (button)
   els.searchButton.addEventListener('click', (e) => {
@@ -224,8 +219,7 @@ function bindEvents() {
   });
 }
 
-/* ========= 6. INIT ========= */
-
+// Init
 function init() {
   bindEvents();
   renderCurrentWeather();
