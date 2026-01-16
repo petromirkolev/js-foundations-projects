@@ -1,15 +1,11 @@
-/**
- * Todo List App (vanilla JS)
- *
- * - State: tasks.items (array of task objects)
- * - Features: add, search, sort, filter, toggle completed, delete, seed, clear all/completed
- * - Rendering: buildTaskList(viewTasks) + loadTasksStatus() from full state
- *
- * This file is intentionally framework-free to practice DOM, state, and events.
- */
+/* 
+Todo List App (vanilla JS)
+  - State: tasks.items (array of task objects)
+  - Features: add, search, sort, filter, toggle completed, delete, seed, clear all/completed
+  - Rendering: buildTaskList(viewTasks) + loadTasksStatus() from full state
+  */
 
-/* ========= 1) STATE + DOM REFERENCES ========= */
-
+// State and DOM references
 const tasks = {
   items: [],
 };
@@ -31,6 +27,7 @@ const els = {
   addTaskByKey: document.querySelector('[data-input="new-todo"]'),
 };
 
+// Task constructor
 function Task(text) {
   this.id = crypto.randomUUID();
   this.text = text;
@@ -38,8 +35,7 @@ function Task(text) {
   this.createdAt = Date.now();
 }
 
-/* ========= 2) PURE / DATA HELPERS (NO DOM) ========= */
-
+// Helpers
 function sortHelper(key) {
   return function (a, b) {
     const valA = a[key];
@@ -63,8 +59,7 @@ function findTaskById(id) {
   return tasks.items.find((t) => t.id === id) || null;
 }
 
-/* ========= 3) RENDERING (DOM FROM GIVEN DATA) ========= */
-
+// DOM renderers
 function loadTasksStatus() {
   const total = tasks.items.length;
   let active = 0;
@@ -151,8 +146,7 @@ function buildTaskList(viewTasks = tasks.items) {
   });
 }
 
-/* ========= 4) CONTROLLERS (STATE CHANGES + RENDER CALLS) ========= */
-
+// Controllers
 function addTask() {
   const value = els.inputNew.value.trim();
   if (value === '') return;
@@ -165,14 +159,12 @@ function addTask() {
     return;
   }
 
-  const newTask = new Task(value);
-  tasks.items.push(newTask);
-
+  tasks.items.push(new Task(value));
   buildTaskList(tasks.items);
   els.inputNew.value = '';
 }
 
-function searchTaskList() {
+function searchTasks() {
   const query = els.search.value.toLowerCase();
   const foundTasks = tasks.items.filter((task) =>
     task.text.toLowerCase().includes(query)
@@ -200,7 +192,7 @@ function sortTasks(target) {
       buildTaskList(sorted.reverse());
       break;
     default:
-      break;
+      throw new Error('Error in sorting!');
   }
 }
 
@@ -221,7 +213,7 @@ function filterByStatus(target) {
       break;
     }
     default:
-      break;
+      throw new Error('Error in filtering!');
   }
 }
 
@@ -246,7 +238,7 @@ function seedSample() {
   buildTaskList(tasks.items);
 }
 
-function handleListClick(e) {
+function listClickHandler(e) {
   const itemEl = e.target.closest('.todo-item');
   if (!itemEl) return;
 
@@ -290,45 +282,26 @@ function handleListClick(e) {
   }
 }
 
-/* ========= 5) EVENT WIRING ========= */
-
+// Event wiring
 function bindEvents() {
-  // Add new task by click
   els.addTaskByClick.addEventListener('click', addTask);
-
-  // Add new task by Enter key
   els.addTaskByKey.addEventListener('keypress', (e) => {
     if (e.key === 'Enter') addTask();
   });
-
-  // Search
-  els.search.addEventListener('input', searchTaskList);
-
-  // Sort
+  els.search.addEventListener('input', searchTasks);
   els.sort.addEventListener('change', (e) => {
     sortTasks(e.target);
   });
-
-  // Filter
   els.filterStatus.addEventListener('change', (e) => {
     filterByStatus(e.target);
   });
-
-  // Clear all
   els.clearAll.addEventListener('click', clearAllTasks);
-
-  // Clear completed
   els.clearCompleted.addEventListener('click', clearCompleteTasks);
-
-  // Seed sample
   els.seed.addEventListener('click', seedSample);
-
-  // Delegated list handler (toggle / delete / edit)
-  els.list.addEventListener('click', handleListClick);
+  els.list.addEventListener('click', listClickHandler);
 }
 
-/* ========= 6) INIT ========= */
-
+// Init
 function init() {
   bindEvents();
   buildTaskList(tasks.items);
