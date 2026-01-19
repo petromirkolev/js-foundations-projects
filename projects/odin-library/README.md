@@ -21,7 +21,7 @@ Open the page in a browser:
 
 open index.html
 
-Or visit the <a href="https://petromirkolev.github.io/js-foundations-projects/13-odin-library/src/index.html"> Live Demo </a>
+Or visit the <a href="https://petromirkolev.github.io/js-foundations-projects/odin-library/src/index.html"> Live Demo </a>
 
 ---
 

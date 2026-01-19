@@ -26,4 +26,4 @@ Open in a browser:
 open index.html (or double-click the file)
 ```
 
-Or visit the <a href="https://petromirkolev.github.io/js-foundations-projects/14-odin-todo/src/index.html"> Live Demo </a>
+Or visit the <a href="https://petromirkolev.github.io/js-foundations-projects/odin-todo/src/index.html"> Live Demo </a>
