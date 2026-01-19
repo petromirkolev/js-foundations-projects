@@ -29,4 +29,4 @@ Or visit the <a href="https://petromirkolev.github.io/js-foundations-projects/pr
 
 ## QA Notes
 
-Visit the <a href="https://petromirkolev.github.io/js-foundations-projects/odin-calculator/projects/tests/tests.html"> demo test page </a> to inspect test results.
+Visit the <a href="https://petromirkolev.github.io/js-foundations-projects/projects/odin-calculator/tests/tests.html"> demo test page </a> to inspect test results.
