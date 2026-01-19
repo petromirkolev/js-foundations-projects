@@ -23,10 +23,10 @@ Open the page in a browser:
 
 open index.html
 
-Or visit the <a href="https://petromirkolev.github.io/js-foundations-projects/odin-calculator/index.html"> Live Demo </a>
+Or visit the <a href="https://petromirkolev.github.io/js-foundations-projects/projects/odin-calculator/index.html"> Live Demo </a>
 
 ---
 
 ## QA Notes
 
-Visit the <a href="https://petromirkolev.github.io/js-foundations-projects/odin-calculator/tests/tests.html"> demo test page </a> to inspect test results.
+Visit the <a href="https://petromirkolev.github.io/js-foundations-projects/odin-calculator/projects/tests/tests.html"> demo test page </a> to inspect test results.
