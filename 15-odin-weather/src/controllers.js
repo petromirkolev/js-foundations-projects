@@ -51,7 +51,7 @@ async function getUserLocation(location) {
     showStatus('');
   } catch (error) {
     console.error(error);
-    showStatus('Could not load weather. Please try again.');
+    showStatus('No results found.');
   }
 }
 

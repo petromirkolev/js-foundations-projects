@@ -9,15 +9,16 @@
 import { els } from './state.js';
 import { renderCurrentWeather } from './renderers.js';
 import { getUserLocation } from './controllers.js';
+import { switchUnits } from './helpers.js';
 
 // Event wiring
 function bindEvents() {
   els.searchButton.addEventListener('click', (e) => {
     e.preventDefault();
     const value = els.city.value.trim();
-    if (!value) return;
-    getUserLocation(value);
     els.city.value = '';
+    if (!value || !value.match(/[a-z]/i)) return;
+    getUserLocation(value);
   });
 
   els.units.forEach((unitBtn) => {
