@@ -4,19 +4,17 @@ A collection of **small, focused JavaScript projects** built to practice **core 
 
 The emphasis is on **correct behavior and debuggability**, not UI polish or frameworks.
 
-Each folder is a **self-contained mini-project**.
-
 ---
 
 ## What this repo shows
 
 - JavaScript fundamentals (no frameworks)
-- State and immutability
-- DOM interaction (logic-first)
-- Async / await and error handling
-- API interaction and failure cases
+- State and immutability (logic-first)
+- DOM rendering from state
+- Async/await + error handling
+- API integration + failure cases
 
-This repository serves as a foundation for:
+This repo supports my path into:
 
 - Manual QA
 - Automation QA (Playwright)
@@ -24,36 +22,50 @@ This repository serves as a foundation for:
 
 ---
 
-## Projects
+## Repo structure
 
-| #   | Folder                      | Description                                   |
-| --- | --------------------------- | --------------------------------------------- |
-| 01  | 01-dom-playground           | Basic DOM manipulation & event handling       |
-| 02  | 02-array-utils              | Array helpers and pure data utilities         |
-| 03  | 03-objects-and-state        | Stateful objects, immutable state patterns    |
-| 04  | 04-async-basics             | Promises, async/await, basic async flows      |
-| 05  | 05-api-mini-project         | Simple API calls & DOM rendering              |
-| 06  | 06-api-poller               | Polling pattern for APIs                      |
-| 07  | 07-telemetry-simulator      | Simulated telemetry data and visualization    |
-| 08  | 08-task-runner              | Task queue / runner logic                     |
-| 09  | 09-api-dashboard            | Small API dashboard UI                        |
-| 10  | 10-dom-playground-2         | DOM practice v2 (events, rendering, patterns) |
-| 11  | 11-odin-rock-paper-scissors | Odin Project – console RPS game               |
-| 12  | 12-odin-calculator          | Odin Project – calculator with JS & DOM       |
-| 13  | 13-odin-library             | Odin Project – library app (state + DOM)      |
-| 14  | 14-odin-todo                | Odin Project – todo app (filters, state)      |
-| 15  | 15-odin-weather             | Odin Project – weather app with APIs          |
-| 16  | 16-odin-battleship          | Odin Project – battleship with tests & AI     |
+- **"projects/"** → Odin-style apps (bigger, end-to-end)
+- **"exercises/"** → smaller drills and experiments (focused practice)
+
+---
+
+## projects projects (Odin-style)
+
+| Project             | Folder                         | Description                                           |
+| ------------------- | ------------------------------ | ----------------------------------------------------- |
+| Rock–Paper–Scissors | "projects/rock-paper-scissors" | Odin Project game (JS logic + DOM)                    |
+| Calculator          | "projects/calculator"          | Calculator with state-driven display + input handling |
+| Library             | "projects/library"             | CRUD library app (state, filter/search/sort, modal)   |
+| Todo                | "projects/todo"                | Todo app (add/edit/toggle/filter/search/sort)         |
+| Weather             | "projects/weather"             | Weather app (geocoding + forecast APIs, units switch) |
+| Battleship          | "projects/battleship"          | Battleship core logic + AI shots + tests              |
+
+---
+
+## Labs (focused exercises)
+
+| #   | Folder                          | Description                                 |
+| --- | ------------------------------- | ------------------------------------------- |
+| 01  | "exercises/dom-playground"      | DOM manipulation & event handling drills    |
+| 02  | "exercises/array-utils"         | Pure data utilities / helpers               |
+| 03  | "exercises/objects-and-state"   | Stateful objects + immutable state patterns |
+| 04  | "exercises/async-basics"        | Promises, async/await, async flows          |
+| 05  | "exercises/api-mini-project"    | Simple API calls + DOM rendering            |
+| 06  | "exercises/api-poller"          | API polling pattern                         |
+| 07  | "exercises/telemetry-simulator" | Simulated telemetry + visualization         |
+| 08  | "exercises/task-runner"         | Task queue / runner logic                   |
+| 09  | "exercises/api-dashboard"       | Small API dashboard UI                      |
+| 10  | "exercises/dom-playground-2"    | DOM practice v2 (rendering patterns)        |
 
 ---
 
 ## How to run
 
-Browser-based projects:
+Most projects are browser-based:
 
-- open index.html
+- Open the project's "index.html"
 
-Or open the project's live demo from the corresponding README.md file.
+If a project has a live demo link, it’s in that project’s README.
 
 ---
 
@@ -61,5 +73,5 @@ Or open the project's live demo from the corresponding README.md file.
 
 - Projects favor clarity over cleverness
 - State lives in JavaScript, not the DOM
-- Errors and edge cases are handled intentionally
-- This is a **foundational learning repository**, not a polished product showcase
+- Edge cases are handled intentionally
+- This is a learning repo with portfolio-ready subsets in "projects/"
