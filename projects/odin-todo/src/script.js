@@ -8,6 +8,7 @@ Todo List App (vanilla JS)
 // State and DOM references
 const tasks = {
   items: [],
+  sorted: undefined,
 };
 
 const els = {
@@ -152,7 +153,7 @@ function addTask() {
   if (value === '') return;
 
   const exists = tasks.items.find(
-    (item) => item.text.toLowerCase() === value.toLowerCase()
+    (item) => item.text.toLowerCase() === value.toLowerCase(),
   );
   if (exists) {
     alert('There is such item already!');
@@ -167,14 +168,20 @@ function addTask() {
 function searchTasks() {
   const query = els.search.value.toLowerCase();
   const foundTasks = tasks.items.filter((task) =>
-    task.text.toLowerCase().includes(query)
+    task.text.toLowerCase().includes(query),
   );
-  buildTaskList(foundTasks);
+
+  if (query) {
+    buildTaskList(foundTasks);
+  } else {
+    sortTasks(tasks.sorted);
+  }
 }
 
-function sortTasks(target) {
+function sortTasks(value) {
   let sorted;
-  switch (target.value) {
+
+  switch (value) {
     case 'textAsc':
       sorted = tasks.items.toSorted(sortHelper('text'));
       buildTaskList(sorted);
@@ -233,7 +240,7 @@ function seedSample() {
   tasks.items.push(
     new Task('Cook'),
     new Task('Laundry'),
-    new Task('Walk the dog')
+    new Task('Walk the dog'),
   );
   buildTaskList(tasks.items);
 }
@@ -290,7 +297,8 @@ function bindEvents() {
   });
   els.search.addEventListener('input', searchTasks);
   els.sort.addEventListener('change', (e) => {
-    sortTasks(e.target);
+    tasks.sorted = e.target.value;
+    sortTasks(tasks.sorted);
   });
   els.filterStatus.addEventListener('change', (e) => {
     filterByStatus(e.target);
