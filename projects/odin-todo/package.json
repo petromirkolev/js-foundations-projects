@@ -1,0 +1,14 @@
+{
+  "name": "odin-todo",
+  "version": "1.0.0",
+  "description": "A small Todo app to practice **state management, filtering, sorting, and event delegation** in plain JavaScript.",
+  "main": "index.js",
+  "scripts": {
+    "serve:todo": "python3 -m http.server 5500",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs"
+}
