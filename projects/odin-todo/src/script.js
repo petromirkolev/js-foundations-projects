@@ -1,6 +1,6 @@
 /* 
 Todo List App (vanilla JS)
-  - State: tasks.items (array of task objects)
+  - State: tasks.items (array of task objects); tasks.ui (object holding sort/filter actions)
   - Features: add, search, sort, filter, toggle completed, delete, seed, clear all/completed
   - Rendering: buildTaskList(viewTasks) + loadTasksStatus() from full state
   */
@@ -8,7 +8,11 @@ Todo List App (vanilla JS)
 // State and DOM references
 const tasks = {
   items: [],
-  sorted: undefined,
+  ui: {
+    searchQuery: '',
+    filterQuery: 'all',
+    sortQuery: 'createdDesc',
+  },
 };
 
 const els = {
@@ -36,27 +40,40 @@ function Task(text) {
   this.createdAt = Date.now();
 }
 
-// Helpers
-function sortHelper(key) {
-  return function (a, b) {
-    const valA = a[key];
-    const valB = b[key];
+function getViewItems() {
+  const { items, ui } = tasks;
+  let view = [...items];
 
-    if (typeof valA === 'string' && typeof valB === 'string') {
-      const aStr = valA.toLowerCase();
-      const bStr = valB.toLowerCase();
-      if (aStr > bStr) return 1;
-      if (aStr < bStr) return -1;
-      return 0;
-    }
+  if (ui.filterQuery === 'active') view = view.filter((t) => !t.completed);
+  if (ui.filterQuery === 'completed') view = view.filter((t) => t.completed);
 
-    if (valA > valB) return 1;
-    if (valA < valB) return -1;
-    return 0;
-  };
+  const q = ui.searchQuery.trim().toLowerCase();
+  if (q) view = view.filter((t) => t.text.toLowerCase().includes(q));
+
+  switch (ui.sortQuery) {
+    case 'textAsc':
+      view.sort((a, b) => a.text.localeCompare(b.text));
+      break;
+    case 'textDesc':
+      view.sort((a, b) => b.text.localeCompare(a.text));
+      break;
+    case 'createdAsc':
+      view.sort((a, b) => a.createdAt - b.createdAt);
+      break;
+    case 'createdDesc':
+      view.sort((a, b) => b.createdAt - a.createdAt);
+      break;
+  }
+
+  return view;
 }
 
-function findTaskById(id) {
+function render() {
+  buildTaskList(getViewItems());
+}
+
+// Helpers
+function findTaskHelper(id) {
   return tasks.items.find((t) => t.id === id) || null;
 }
 
@@ -161,78 +178,24 @@ function addTask() {
   }
 
   tasks.items.push(new Task(value));
-  buildTaskList(tasks.items);
+  render();
   els.inputNew.value = '';
 }
 
 function searchTasks() {
-  const query = els.search.value.toLowerCase();
-  const foundTasks = tasks.items.filter((task) =>
-    task.text.toLowerCase().includes(query),
-  );
-
-  if (query) {
-    buildTaskList(foundTasks);
-  } else {
-    sortTasks(tasks.sorted);
-  }
+  tasks.ui.searchQuery = els.search.value.toLowerCase();
+  render();
 }
 
-function sortTasks(value) {
-  let sorted;
-
-  switch (value) {
-    case 'textAsc':
-      sorted = tasks.items.toSorted(sortHelper('text'));
-      buildTaskList(sorted);
-      break;
-    case 'textDesc':
-      sorted = tasks.items.toSorted(sortHelper('text'));
-      buildTaskList(sorted.reverse());
-      break;
-    case 'createdAsc':
-      sorted = tasks.items.toSorted(sortHelper('createdAt'));
-      buildTaskList(sorted);
-      break;
-    case 'createdDesc':
-      sorted = tasks.items.toSorted(sortHelper('createdAt'));
-      buildTaskList(sorted.reverse());
-      break;
-    default:
-      throw new Error('Error in sorting!');
-  }
-}
-
-function filterByStatus(target) {
-  switch (target.value) {
-    case 'all': {
-      buildTaskList(tasks.items);
-      break;
-    }
-    case 'completed': {
-      const completeTasks = tasks.items.filter((task) => task.completed);
-      buildTaskList(completeTasks);
-      break;
-    }
-    case 'active': {
-      const activeTasks = tasks.items.filter((task) => !task.completed);
-      buildTaskList(activeTasks);
-      break;
-    }
-    default:
-      throw new Error('Error in filtering!');
-  }
-}
-
-function clearAllTasks() {
+function clearAll() {
   tasks.items = [];
-  buildTaskList(tasks.items);
+  render();
 }
 
-function clearCompleteTasks() {
+function clearCompleted() {
   const remainingTasks = tasks.items.filter((task) => !task.completed);
   tasks.items = remainingTasks;
-  buildTaskList(tasks.items);
+  render();
 }
 
 function seedSample() {
@@ -242,30 +205,22 @@ function seedSample() {
     new Task('Laundry'),
     new Task('Walk the dog'),
   );
-  buildTaskList(tasks.items);
+  render();
 }
 
-function listClickHandler(e) {
+function taskControls(e) {
   const itemEl = e.target.closest('.todo-item');
   if (!itemEl) return;
 
   const id = itemEl.dataset.id;
-  const task = findTaskById(id);
+  const task = findTaskHelper(id);
   if (!task) return;
 
   // Toggle completed
   const toggleBtn = e.target.closest('[data-action="toggle-completed"]');
   if (toggleBtn) {
     task.completed = !task.completed;
-
-    itemEl.classList.toggle('completed', task.completed);
-
-    const textEl = itemEl.querySelector('.todo-text');
-    if (textEl) {
-      textEl.classList.toggle('completed', task.completed);
-    }
-
-    loadTasksStatus();
+    render();
     return;
   }
 
@@ -273,7 +228,7 @@ function listClickHandler(e) {
   const deleteBtn = e.target.closest('[data-action="delete-todo"]');
   if (deleteBtn) {
     tasks.items = tasks.items.filter((t) => t.id !== id);
-    buildTaskList(tasks.items);
+    render();
     return;
   }
 
@@ -282,9 +237,8 @@ function listClickHandler(e) {
   if (editBtn) {
     const nextText = prompt('Edit task', task.text);
     if (!nextText || nextText.trim() === '') return;
-
     task.text = nextText.trim();
-    buildTaskList(tasks.items);
+    render();
     return;
   }
 }
@@ -297,22 +251,23 @@ function bindEvents() {
   });
   els.search.addEventListener('input', searchTasks);
   els.sort.addEventListener('change', (e) => {
-    tasks.sorted = e.target.value;
-    sortTasks(tasks.sorted);
+    tasks.ui.sortQuery = e.target.value;
+    render();
   });
   els.filterStatus.addEventListener('change', (e) => {
-    filterByStatus(e.target);
+    tasks.ui.filterQuery = e.target.value;
+    render();
   });
-  els.clearAll.addEventListener('click', clearAllTasks);
-  els.clearCompleted.addEventListener('click', clearCompleteTasks);
+  els.clearAll.addEventListener('click', clearAll);
+  els.clearCompleted.addEventListener('click', clearCompleted);
   els.seed.addEventListener('click', seedSample);
-  els.list.addEventListener('click', listClickHandler);
+  els.list.addEventListener('click', taskControls);
 }
 
 // Init
 function init() {
   bindEvents();
-  buildTaskList(tasks.items);
+  render();
 }
 
 init();
