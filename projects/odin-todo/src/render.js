@@ -8,6 +8,7 @@ function render() {
 function buildTaskList(viewTasks = tasks.items) {
   loadTasksStatus();
   els.list.innerHTML = '';
+  els.empty.textContent = 'No tasks yet. Add your first todo above.';
 
   if (!tasks.items.length) {
     if (els.empty) els.empty.style.display = 'block';
@@ -68,6 +69,11 @@ function buildTaskList(viewTasks = tasks.items) {
 
     els.list.appendChild(li);
   });
+
+  if (els.list.childElementCount === 0) {
+    els.empty.style.display = 'block';
+    els.empty.textContent = 'No matching tasks';
+  }
 }
 
 function loadTasksStatus() {
