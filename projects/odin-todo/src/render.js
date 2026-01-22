@@ -2,6 +2,7 @@ import { tasks, getViewItems } from './state.js';
 import { els } from './dom.js';
 
 function render() {
+  localStorage.setItem('state', JSON.stringify(tasks));
   buildTaskList(getViewItems());
 }
 

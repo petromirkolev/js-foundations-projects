@@ -16,6 +16,7 @@ function addTask() {
 
   tasks.items.push(createTask(value));
   render();
+
   els.inputNew.value = '';
 }
 
@@ -100,4 +101,15 @@ function bindEvents() {
   els.list.addEventListener('click', taskControls);
 }
 
-export { bindEvents };
+function updateStateOnLoad() {
+  try {
+    const state = JSON.parse(localStorage.getItem('state'));
+    if (!state) return;
+    tasks.items = state.items ?? [];
+    tasks.ui = state.ui ?? tasks.ui;
+  } catch {
+    return;
+  }
+}
+
+export { bindEvents, updateStateOnLoad };
