@@ -101,15 +101,4 @@ function bindEvents() {
   els.list.addEventListener('click', taskControls);
 }
 
-function updateStateOnLoad() {
-  try {
-    const state = JSON.parse(localStorage.getItem('state'));
-    if (!state) return;
-    tasks.items = state.items ?? [];
-    tasks.ui = state.ui ?? tasks.ui;
-  } catch {
-    return;
-  }
-}
-
-export { bindEvents, updateStateOnLoad };
+export { bindEvents };
