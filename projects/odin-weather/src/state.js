@@ -1,4 +1,3 @@
-// State and DOM references
 const state = {
   lat: 0,
   lon: 0,

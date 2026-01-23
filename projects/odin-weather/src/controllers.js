@@ -1,14 +1,13 @@
 import { els, state } from './state.js';
 import { renderCurrentWeather } from './renderers.js';
-import { showStatus } from './helpers.js';
+import { showStatus, switchUnits } from './helpers.js';
 
-// Controllers
 async function getWeather() {
   const weatherApiUrl = `https://api.open-meteo.com/v1/forecast?latitude=${state.lat}&longitude=${state.lon}&current=temperature_2m,relative_humidity_2m,apparent_temperature,wind_speed_10m,surface_pressure,cloud_cover&daily=temperature_2m_max,temperature_2m_min&forecast_days=6&timezone=auto`;
 
   const response = await fetch(weatherApiUrl);
   if (!response.ok) {
-    throw new Error('Cannot get forecast!');
+    throw new Error('Cannot get forecast');
   }
 
   const data = await response.json();
@@ -24,15 +23,16 @@ async function getWeather() {
 
 async function getUserLocation(location) {
   const geocodeUrl = `https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(
-    location
+    location,
   )}&count=10&language=en&format=json`;
 
   try {
     showStatus('Loading...');
 
     const res = await fetch(geocodeUrl);
+
     if (!res.ok) {
-      throw new Error('Cannot get location!');
+      throw new Error('Cannot get location');
     }
 
     const data = await res.json();
@@ -51,8 +51,29 @@ async function getUserLocation(location) {
     showStatus('');
   } catch (error) {
     console.error(error);
-    showStatus('No results found.');
+    showStatus('No results found');
   }
 }
 
-export { getWeather, getUserLocation };
+function bindEvents() {
+  els.searchButton.addEventListener('click', (e) => {
+    e.preventDefault();
+    const value = els.city.value.trim();
+    els.city.value = '';
+    if (!value || !value.match(/[a-z]/i)) {
+      showStatus('Invalid city name');
+      return;
+    }
+    getUserLocation(value);
+  });
+
+  els.units.forEach((unitBtn) => {
+    unitBtn.addEventListener('click', (e) => {
+      const nextUnits = e.target.dataset.units;
+      if (!nextUnits) return;
+      switchUnits(nextUnits);
+    });
+  });
+}
+
+export { getWeather, getUserLocation, bindEvents };

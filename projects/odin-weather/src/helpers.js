@@ -1,7 +1,6 @@
 import { state, els } from './state.js';
 import { renderCurrentWeather } from './renderers.js';
 
-// Helpers
 function cToF(celsius) {
   return (celsius * 9) / 5 + 32;
 }

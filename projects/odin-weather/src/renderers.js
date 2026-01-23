@@ -1,7 +1,6 @@
 import { els, state } from './state.js';
 import { formatTemp } from './helpers.js';
 
-// Renderers
 function renderCurrentWeather() {
   if (!state.city || !state.currentWeather) {
     if (els.currentPlaceholder) {
